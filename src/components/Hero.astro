@@ -1,0 +1,60 @@
+---
+import { experience } from "../content/projects";
+const now = experience.steps.find((s) => s.now)!;
+---
+
+<section id="top" class="container-x relative flex min-h-[100svh] flex-col justify-center pb-20 pt-28">
+  <p class="label hero-enter" style="animation-delay:60ms">Systems &amp; robotics engineer</p>
+
+  <h1
+    class="hero-enter mt-6 text-[clamp(2.9rem,9vw,6.5rem)] font-extrabold leading-[0.95] tracking-[-0.045em] text-strong"
+    style="animation-delay:120ms"
+  >
+    Uppala<br />Sri Chaitanya
+  </h1>
+
+  <p
+    class="hero-enter mt-8 text-[clamp(1.4rem,3.2vw,2.25rem)] font-semibold leading-tight tracking-[-0.025em] text-muted"
+    style="animation-delay:220ms"
+  >
+    Built from scratch. <span class="text-strong">Measured honestly.</span>
+  </p>
+
+  <p class="hero-enter mt-6 max-w-[38rem] text-[17px] leading-relaxed text-muted sm:text-[18px]" style="animation-delay:300ms">
+    I build systems from first principles: an agent orchestrator, a code cartographer, a servo-tuning suite and a vector
+    database. By day, robotics research at {experience.org}.
+  </p>
+
+  <!-- The signal trace: a step response that overshoots, then settles on its target. -->
+  <svg
+    class="hero-trace mt-14 h-16 w-full max-w-[52rem] overflow-visible sm:h-20"
+    viewBox="0 0 1000 100"
+    preserveAspectRatio="none"
+    aria-hidden="true"
+  >
+    <line class="target" x1="150" y1="24" x2="1000" y2="24" stroke="rgba(255,255,255,0.18)" stroke-dasharray="4 6" vector-effect="non-scaling-stroke"></line>
+    <path
+      class="signal"
+      pathLength="1"
+      d="M0,84 L160,84 C186,84 194,12 230,10 C262,8 268,31 296,29 C320,27 330,22 352,23.4 C378,25 400,24 1000,24"
+      fill="none"
+      stroke="#14b8a6"
+      stroke-width="2"
+      stroke-linejoin="round"
+      vector-effect="non-scaling-stroke"></path>
+  </svg>
+
+  <div class="hero-enter mt-10 flex flex-wrap items-center gap-x-8 gap-y-4" style="animation-delay:500ms">
+    <a href="#work" class="group inline-flex items-center gap-2 text-[15px] font-medium text-strong">
+      <span class="trace-link">See the work</span>
+      <span aria-hidden class="transition-transform duration-200 group-hover:translate-y-0.5">↓</span>
+    </a>
+    <a href="#experience" class="flex items-center gap-2.5 text-[14px] text-muted transition-colors hover:text-text">
+      <span class="relative flex h-2 w-2">
+        <span class="absolute inset-0 rounded-full bg-signal/40 motion-safe:animate-ping [animation-duration:2.4s]"></span>
+        <span class="relative h-2 w-2 rounded-full bg-signal"></span>
+      </span>
+      Now: {now.title.toLowerCase()} for the SO-101 arm
+    </a>
+  </div>
+</section>

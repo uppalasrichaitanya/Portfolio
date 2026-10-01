@@ -1,0 +1,48 @@
+---
+const links = [
+  { href: "#work", label: "Work" },
+  { href: "#experience", label: "Experience" },
+  { href: "#contact", label: "Contact" },
+];
+---
+
+<header
+  id="site-nav"
+  class="fixed inset-x-0 top-0 z-40 border-b border-transparent transition-[transform,background-color,border-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]"
+>
+  <div class="container-x flex h-16 items-center justify-between">
+    <a href="#top" class="text-[14px] font-semibold tracking-[-0.01em] text-strong">Uppala Sri Chaitanya</a>
+    <nav aria-label="Sections">
+      <ul class="flex items-center gap-5 text-[14px] sm:gap-8">
+        {links.map((l) => <li><a href={l.href} class="trace-link text-muted">{l.label}</a></li>)}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const nav = document.getElementById("site-nav")!;
+  let last = window.scrollY;
+  let ticking = false;
+  const update = () => {
+    const y = window.scrollY;
+    const scrolled = y > 24;
+    nav.classList.toggle("bg-bg/95", scrolled);
+    nav.classList.toggle("border-line", scrolled);
+    const hide = y > last && y > 320 && !nav.contains(document.activeElement);
+    nav.style.transform = hide ? "translateY(-100%)" : "";
+    last = y;
+    ticking = false;
+  };
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    },
+    { passive: true },
+  );
+  update();
+</script>

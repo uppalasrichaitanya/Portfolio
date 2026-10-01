@@ -1,6 +1,6 @@
 # Portfolio — Design & Build Plan
 
-Status: proposal, awaiting approval. Nothing is built yet.
+Status: approved and built. Decisions from review are recorded in §10.
 
 ---
 
@@ -246,10 +246,10 @@ Each step gets its own commit pushed to the branch, with you as the author.
 
 ---
 
-## 10. Decisions needed from you
+## 10. Decisions (resolved)
 
-1. **ServoPilot and double-blind review.** Do I show the metrics and the paper mention now, or put them behind a single flag (off by default) until the review is finished? With the flag off, the chapter keeps its screenshots and the problem-and-solution story but leaves out the numbers and any mention of the paper.
-2. **ServoPilot's stack.** The brief says TypeScript/Electron, but the screenshots look like a native Qt desktop app (PyQt/PySide?). What is it actually built with?
-3. **Astro instead of Vite/Next.js:** OK?
-4. **Tagline direction** (§1): OK to drop "AI research at scale"?
-5. *(Optional)* Location for the contact line, e.g. "Hyderabad, India · IST".
+1. **ServoPilot:** show the metrics and say the paper is under review (venue not named). No repo or source links.
+2. **ServoPilot stack:** Python + PyQt desktop app, Linux and Windows.
+3. **Framework:** Astro, with Motion (Framer Motion) for reveals and interactions. React components run on Preact's compat layer, which cuts the runtime from ~67 KB to ~10 KB gzipped. First-load JS is ~50 KB gzipped in total.
+4. **Tagline:** "Built from scratch. Measured honestly." "Systems that scale" was considered and rejected because nothing on the page demonstrates scale, while every project demonstrates measurement.
+5. **Open projects:** TARS, Autodevlab and Scraper aren't public yet, so they're listed as "private repo" without links.

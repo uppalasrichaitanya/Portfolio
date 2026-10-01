@@ -1,0 +1,10 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist"],
+  "compilerOptions": {
+    // Type-check against React's types; at build time Preact's compat layer provides the runtime.
+    "jsx": "react-jsx",
+    "jsxImportSource": "react"
+  }
+}

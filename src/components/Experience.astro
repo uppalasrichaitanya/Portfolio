@@ -1,0 +1,41 @@
+---
+import Reveal from "../lib/motion";
+import { experience as x } from "../content/projects";
+---
+
+<section id="experience" class="container-x scroll-mt-20 py-28 sm:py-40" aria-labelledby="exp-title">
+  <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
+    <Reveal client:visible className="lg:col-span-4">
+      <p class="label">Experience</p>
+      <h2 id="exp-title" class="mt-4 text-[clamp(1.9rem,4vw,2.75rem)] font-extrabold leading-tight tracking-[-0.03em] text-strong">
+        {x.org}
+      </h2>
+      <p class="mt-3 font-mono text-[13px] text-muted">{x.role} · {x.period}</p>
+      <p class="mt-6 max-w-[26rem] text-[17px] leading-relaxed text-muted">{x.summary}</p>
+    </Reveal>
+
+    <ol class="relative lg:col-span-8">
+      <span aria-hidden class="absolute bottom-3 left-[5px] top-3 w-px bg-line"></span>
+      {
+        x.steps.map((s, i) => (
+          <li class="relative pb-9 pl-10 last:pb-0">
+            <span
+              aria-hidden
+              class:list={[
+                "absolute left-0 top-[0.45rem] h-[11px] w-[11px] rounded-full border",
+                s.now ? "border-signal bg-signal" : "border-line-strong bg-bg",
+              ]}
+            />
+            <Reveal client:visible delay={i * 0.03}>
+              <p class="flex flex-wrap items-baseline gap-x-3 text-[17px] font-semibold text-strong">
+                {s.href ? <a href={s.href} class="trace-link">{s.title}</a> : s.title}
+                {s.now && <span class="font-mono text-[11px] font-normal uppercase tracking-wider text-signal">Now</span>}
+              </p>
+              <p class="mt-1.5 max-w-[40rem] text-[16px] leading-relaxed text-muted">{s.body}</p>
+            </Reveal>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

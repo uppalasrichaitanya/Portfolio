@@ -1,0 +1,54 @@
+---
+import Base from "../layouts/Base.astro";
+import Nav from "../components/Nav.astro";
+import Hero from "../components/Hero.astro";
+import Experience from "../components/Experience.astro";
+import Contact from "../components/Contact.astro";
+import Chapter from "../components/Chapter";
+import ChapterIndex from "../components/ChapterIndex";
+import AlsoBuilt from "../components/AlsoBuilt";
+import Reveal from "../lib/motion";
+import { projects, alsoBuilt } from "../content/projects";
+---
+
+<Base
+  title="Uppala Sri Chaitanya: systems & robotics engineer"
+  description="Built from scratch, measured honestly. DUM-E, Cartograph, ServoPilot and Quiver, plus robotics research at Teleparadigm Networks."
+>
+  <Nav />
+  <ChapterIndex client:idle entries={projects.map((p) => ({ id: p.id, index: p.index, title: p.title }))} />
+  <main id="main">
+    <Hero />
+
+    <section id="work" class="container-x scroll-mt-20 pt-16 sm:pt-24" aria-labelledby="work-title">
+      <Reveal client:visible>
+        <div class="flex items-end justify-between gap-6 border-b border-line pb-6">
+          <h2 id="work-title" class="text-[clamp(1.5rem,3vw,2rem)] font-bold tracking-[-0.025em] text-strong">Selected work</h2>
+          <p class="label">04 projects</p>
+        </div>
+      </Reveal>
+      <div class="mt-20 space-y-32 sm:mt-28 sm:space-y-44">
+        {projects.map((p, i) => <div><Chapter client:visible p={p} flip={i % 2 === 1} /></div>)}
+      </div>
+    </section>
+
+    <Experience />
+
+    <section class="container-x" aria-labelledby="also-title">
+      <Reveal client:visible>
+        <div class="mb-6 flex items-end justify-between gap-6">
+          <h2 id="also-title" class="text-[clamp(1.25rem,2.5vw,1.6rem)] font-bold tracking-[-0.02em] text-strong">Also built</h2>
+          <p class="label">{alsoBuilt.length} more</p>
+        </div>
+      </Reveal>
+      <AlsoBuilt client:visible items={alsoBuilt} />
+    </section>
+  </main>
+  <Contact />
+</Base>
+
+<script>
+  // Chapters hydrate when visible, so bring a deep-linked case into view; it opens itself on hydration.
+  const m = window.location.hash.match(/^#case-([\w-]+)$/);
+  if (m) document.getElementById(m[1])?.scrollIntoView({ block: "start" });
+</script>
