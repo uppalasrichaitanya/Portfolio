@@ -1,0 +1,27 @@
+---
+interface Props {
+  id: string;
+  index: string;
+  eyebrow: string;
+  /** Rendered as plain text, then `accent` in the serif italic. */
+  title: string;
+  accent?: string;
+  aside?: string;
+}
+const { id, index, eyebrow, title, accent, aside } = Astro.props;
+---
+
+<div data-reveal class="flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
+  <div>
+    <p class="label flex items-center gap-3">
+      <span class="text-signal">{index}</span>
+      <span class="h-px w-8 bg-line-strong" aria-hidden="true"></span>
+      {eyebrow}
+    </p>
+    <h2 id={id} class="mt-4 text-[clamp(2.2rem,5vw,3.6rem)] font-extrabold leading-[1] tracking-[-0.04em] text-strong">
+      {title}
+      {accent && <span class="serif font-normal text-signal">{accent}</span>}
+    </h2>
+  </div>
+  {aside && <p class="max-w-[22rem] text-[15px] leading-relaxed text-muted">{aside}</p>}
+</div>

@@ -132,7 +132,7 @@ function Scene({ play, reduce }: { play: boolean; reduce: boolean }) {
         const q = project(QUERY, layer);
         return (
           <g key={layer}>
-            <polygon points={planePoints(layer)} fill="#1e1e1e" stroke="rgba(255,255,255,0.09)" />
+            <polygon points={planePoints(layer)} fill="#12151a" stroke="rgba(255,255,255,0.1)" />
             <text x={OX - 10} y={LAYER_Y[layer] + D / 2 + 4} textAnchor="end" className="hidden fill-faint font-mono text-[12px] sm:inline">
               L{layer}
             </text>
@@ -154,7 +154,7 @@ function Scene({ play, reduce }: { play: boolean; reduce: boolean }) {
                       cx={pp.x}
                       cy={pp.y}
                       r={isResult ? 4.2 : layer === 0 ? 2.8 : 3.6}
-                      fill="#14b8a6"
+                      fill="#2dd4bf"
                       initial={reduce ? false : { opacity: 0, scale: 0.4 }}
                       animate={shown ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.4 }}
                       style={{ transformOrigin: `${pp.x}px ${pp.y}px` }}
@@ -166,8 +166,8 @@ function Scene({ play, reduce }: { play: boolean; reduce: boolean }) {
             })}
             {/* The query's position on this layer. */}
             <g opacity={0.9}>
-              <circle cx={q.x} cy={q.y} r={7} fill="none" stroke="#14b8a6" strokeOpacity={0.55} strokeDasharray="2 2.5" />
-              <path d={`M${q.x - 3},${q.y} h6 M${q.x},${q.y - 3} v6`} stroke="#14b8a6" strokeOpacity={0.8} />
+              <circle cx={q.x} cy={q.y} r={7} fill="none" stroke="#2dd4bf" strokeOpacity={0.55} strokeDasharray="2 2.5" />
+              <path d={`M${q.x - 3},${q.y} h6 M${q.x},${q.y - 3} v6`} stroke="#2dd4bf" strokeOpacity={0.8} />
             </g>
           </g>
         );
@@ -183,7 +183,7 @@ function Scene({ play, reduce }: { play: boolean; reduce: boolean }) {
             y1={a.y}
             x2={b.x}
             y2={b.y}
-            stroke="#14b8a6"
+            stroke="#2dd4bf"
             strokeWidth={2}
             strokeLinecap="round"
             initial={reduce ? false : { pathLength: 0, opacity: 0 }}
@@ -203,7 +203,7 @@ function Scene({ play, reduce }: { play: boolean; reduce: boolean }) {
             y1={a.y}
             x2={b.x}
             y2={b.y}
-            stroke="#14b8a6"
+            stroke="#2dd4bf"
             strokeWidth={1.25}
             strokeDasharray="3 4"
             initial={reduce ? false : { pathLength: 0, opacity: 0 }}

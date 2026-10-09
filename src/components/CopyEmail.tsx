@@ -17,45 +17,32 @@ export default function CopyEmail({ email }: { email: string }) {
 
   return (
     <MotionRoot>
-      <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
-        <button
-          type="button"
-          onClick={copy}
-          className="trace-link break-all text-left text-[clamp(1.25rem,4vw,2.5rem)] font-semibold tracking-[-0.02em] text-strong"
-          aria-label={`Copy ${email} to clipboard`}
-        >
+      <button
+        type="button"
+        onClick={copy}
+        aria-label={`Copy ${email} to clipboard`}
+        className="group flex w-full max-w-[40rem] items-center gap-3 rounded-2xl border border-line-strong bg-sunk/70 p-2 pl-4 text-left backdrop-blur transition-colors hover:border-signal/60 sm:pl-6"
+      >
+        <span className="min-w-0 flex-1 truncate py-2 text-[clamp(1rem,2.6vw,1.6rem)] font-semibold tracking-[-0.02em] text-strong">
           {email}
-        </button>
-        <span className="relative inline-flex h-6 min-w-[5.5rem] items-center font-mono text-[12px]" aria-live="polite">
+        </span>
+        <span
+          className={`relative inline-flex h-10 w-[6.5rem] shrink-0 items-center justify-center overflow-hidden rounded-xl font-mono text-[12px] transition-colors ${copied ? "bg-signal text-[#04110f]" : "bg-white/5 text-muted group-hover:text-strong"}`}
+          aria-live="polite"
+        >
           <AnimatePresence mode="wait" initial={false}>
-            {copied ? (
-              <m.span
-                key="done"
-                className="text-signal"
-                initial={{ opacity: 0, y: 4 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -4 }}
-                transition={{ duration: 0.2, ease: EASE }}
-              >
-                Copied ✓
-              </m.span>
-            ) : (
-              <m.a
-                key="mail"
-                href={`mailto:${email}`}
-                className="trace-link text-muted"
-                initial={{ opacity: 0, y: 4 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -4 }}
-                transition={{ duration: 0.2, ease: EASE }}
-              >
-                or open mail ↗
-              </m.a>
-            )}
+            <m.span
+              key={copied ? "done" : "copy"}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.18, ease: EASE }}
+            >
+              {copied ? "Copied ✓" : "Copy"}
+            </m.span>
           </AnimatePresence>
         </span>
-      </div>
-      <p className="mt-2 font-mono text-[12px] text-faint">Click the address to copy it.</p>
+      </button>
     </MotionRoot>
   );
 }
