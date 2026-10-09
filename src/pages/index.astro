@@ -4,11 +4,11 @@ import Nav from "../components/Nav.astro";
 import Hero from "../components/Hero.astro";
 import Experience from "../components/Experience.astro";
 import Contact from "../components/Contact.astro";
+import AlsoBuilt from "../components/AlsoBuilt.astro";
+import SectionHeading from "../components/SectionHeading.astro";
 import Chapter from "../components/Chapter";
 import ChapterIndex from "../components/ChapterIndex";
-import AlsoBuilt from "../components/AlsoBuilt";
-import Reveal from "../lib/motion";
-import { projects, alsoBuilt } from "../content/projects";
+import { projects } from "../content/projects";
 ---
 
 <Base
@@ -20,29 +20,22 @@ import { projects, alsoBuilt } from "../content/projects";
   <main id="main">
     <Hero />
 
-    <section id="work" class="container-x scroll-mt-20 pt-16 sm:pt-24" aria-labelledby="work-title">
-      <Reveal client:visible>
-        <div class="flex items-end justify-between gap-6 border-b border-line pb-6">
-          <h2 id="work-title" class="text-[clamp(1.5rem,3vw,2rem)] font-bold tracking-[-0.025em] text-strong">Selected work</h2>
-          <p class="label">04 projects</p>
-        </div>
-      </Reveal>
-      <div class="mt-20 space-y-32 sm:mt-28 sm:space-y-44">
-        {projects.map((p, i) => <div><Chapter client:visible p={p} flip={i % 2 === 1} /></div>)}
+    <section id="work" class="container-x scroll-mt-24 pt-16 sm:pt-24" aria-labelledby="work-title">
+      <SectionHeading
+        id="work-title"
+        index="01"
+        eyebrow="Selected work"
+        title="Four systems,"
+        accent="built from zero."
+        aside="Each one has its numbers on the card and a full case study behind it: problem, approach, evidence, and what was hard."
+      />
+      <div class="mt-14 flex flex-col gap-5 sm:gap-8">
+        {projects.map((p, i) => <Chapter client:visible p={p} flip={i % 2 === 1} />)}
       </div>
     </section>
 
     <Experience />
-
-    <section class="container-x" aria-labelledby="also-title">
-      <Reveal client:visible>
-        <div class="mb-6 flex items-end justify-between gap-6">
-          <h2 id="also-title" class="text-[clamp(1.25rem,2.5vw,1.6rem)] font-bold tracking-[-0.02em] text-strong">Also built</h2>
-          <p class="label">{alsoBuilt.length} more</p>
-        </div>
-      </Reveal>
-      <AlsoBuilt client:visible items={alsoBuilt} />
-    </section>
+    <AlsoBuilt />
   </main>
   <Contact />
 </Base>

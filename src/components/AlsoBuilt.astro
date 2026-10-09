@@ -1,0 +1,53 @@
+---
+import SectionHeading from "./SectionHeading.astro";
+import Icon from "./Icon.astro";
+import { alsoBuilt } from "../content/projects";
+---
+
+<section id="also" class="container-x scroll-mt-24 pb-8" aria-labelledby="also-title">
+  <SectionHeading
+    id="also-title"
+    index="03"
+    eyebrow="Also built"
+    title="More from the"
+    accent="workbench."
+    aside={`${alsoBuilt.length} smaller projects: agents, tooling, local-first apps and crawlers.`}
+  />
+
+  <ul class="mt-14 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    {
+      alsoBuilt.map((it, i) => {
+        const Tag = it.href ? "a" : "div";
+        return (
+          <li data-reveal style={`--d:${(i % 3) * 60}ms`}>
+            <Tag
+              {...(it.href ? { href: it.href, target: "_blank", rel: "noreferrer" } : {})}
+              class:list={[
+                "group flex h-full flex-col rounded-2xl border border-line bg-raised/60 p-5 transition-[border-color,background-color,transform] duration-300 sm:p-6",
+                it.href && "hover:-translate-y-0.5 hover:border-signal/50 hover:bg-raised",
+              ]}
+            >
+              <div class="flex items-center justify-between gap-4">
+                <span class="font-mono text-[11px] text-faint">{String(i + 1).padStart(2, "0")}</span>
+                {it.href ? (
+                  <span class="text-faint transition-colors group-hover:text-signal">
+                    <Icon name="arrow-up-right" size={18} />
+                  </span>
+                ) : (
+                  <span class="chip !py-0.5 !text-[10.5px]">private repo</span>
+                )}
+              </div>
+              <h3 class="mt-6 text-[19px] font-bold tracking-[-0.02em] text-strong">{it.name}</h3>
+              <p class="mt-2 flex-1 text-[14.5px] leading-relaxed text-muted">{it.desc}</p>
+              {it.href && (
+                <span class="mt-5 flex items-center gap-2 font-mono text-[12px] text-faint transition-colors group-hover:text-text">
+                  <Icon name="github" size={14} /> View on GitHub
+                </span>
+              )}
+            </Tag>
+          </li>
+        );
+      })
+    }
+  </ul>
+</section>

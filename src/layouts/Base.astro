@@ -1,6 +1,7 @@
 ---
 import "@fontsource-variable/inter/wght.css";
 import "@fontsource-variable/jetbrains-mono/wght.css";
+import "@fontsource/instrument-serif/latin-400-italic.css";
 import "../styles/global.css";
 
 interface Props {
@@ -17,7 +18,7 @@ const ogImage = new URL("/og.png", Astro.site);
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="dark" />
-    <meta name="theme-color" content="#1a1a1a" />
+    <meta name="theme-color" content="#0a0b0d" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={Astro.site} />
@@ -28,7 +29,9 @@ const ogImage = new URL("/og.png", Astro.site);
     <meta property="og:url" content={Astro.site} />
     <meta property="og:image" content={ogImage} />
     <meta name="twitter:card" content="summary_large_image" />
-    <noscript><style>[data-reveal]{opacity:1!important;transform:none!important}</style></noscript>
+    <script is:inline>
+      if ("IntersectionObserver" in window) document.documentElement.classList.add("js");
+    </script>
   </head>
   <body>
     <a
@@ -37,5 +40,22 @@ const ogImage = new URL("/og.png", Astro.site);
       >Skip to content</a
     >
     <slot />
+    <script>
+      // One observer for every [data-reveal] element, static or inside an island.
+      const show = (el: Element) => el.setAttribute("data-shown", "");
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            // Reveal anything in view, and anything already scrolled past (fast scroll, deep links).
+            if (e.isIntersecting || e.boundingClientRect.bottom < 0) {
+              show(e.target);
+              io.unobserve(e.target);
+            }
+          }
+        },
+        { rootMargin: "0px 0px -8% 0px" },
+      );
+      document.querySelectorAll("[data-reveal]").forEach((el) => io.observe(el));
+    </script>
   </body>
 </html>

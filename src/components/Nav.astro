@@ -2,19 +2,38 @@
 const links = [
   { href: "#work", label: "Work" },
   { href: "#experience", label: "Experience" },
-  { href: "#contact", label: "Contact" },
 ];
 ---
 
 <header
   id="site-nav"
-  class="fixed inset-x-0 top-0 z-40 border-b border-transparent transition-[transform,background-color,border-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]"
+  class="fixed inset-x-0 top-3 z-40 px-3 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] sm:top-4"
 >
-  <div class="container-x flex h-16 items-center justify-between">
-    <a href="#top" class="text-[14px] font-semibold tracking-[-0.01em] text-strong">Uppala Sri Chaitanya</a>
+  <div
+    id="site-nav-bar"
+    class="mx-auto flex h-14 max-w-[72rem] items-center justify-between rounded-full border border-transparent pl-2 pr-2 transition-[background-color,border-color,box-shadow] duration-300"
+  >
+    <a href="#top" class="group flex items-center gap-3 rounded-full pr-3" aria-label="Uppala Sri Chaitanya, back to top">
+      <span
+        class="grid h-10 w-10 place-items-center rounded-full border border-line-strong bg-raised font-mono text-[12px] font-semibold tracking-tight text-signal transition-colors group-hover:border-signal"
+        aria-hidden="true">USC</span
+      >
+      <span class="hidden text-[14px] font-semibold tracking-[-0.01em] text-strong sm:inline">Uppala Sri Chaitanya</span>
+    </a>
     <nav aria-label="Sections">
-      <ul class="flex items-center gap-5 text-[14px] sm:gap-8">
-        {links.map((l) => <li><a href={l.href} class="trace-link text-muted">{l.label}</a></li>)}
+      <ul class="flex items-center gap-1 text-[14px]">
+        {
+          links.map((l) => (
+            <li>
+              <a href={l.href} class="rounded-full px-3 py-2 text-muted transition-colors hover:bg-white/5 hover:text-strong sm:px-4">
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+        <li class="ml-1">
+          <a href="#contact" class="btn btn-primary !h-10 !px-4 !text-[14px]">Contact</a>
+        </li>
       </ul>
     </nav>
   </div>
@@ -22,15 +41,15 @@ const links = [
 
 <script>
   const nav = document.getElementById("site-nav")!;
+  const bar = document.getElementById("site-nav-bar")!;
+  const solid = ["bg-raised/80", "border-line", "backdrop-blur-xl", "shadow-[0_10px_40px_-12px_rgba(0,0,0,0.7)]"];
   let last = window.scrollY;
   let ticking = false;
   const update = () => {
     const y = window.scrollY;
-    const scrolled = y > 24;
-    nav.classList.toggle("bg-bg/95", scrolled);
-    nav.classList.toggle("border-line", scrolled);
-    const hide = y > last && y > 320 && !nav.contains(document.activeElement);
-    nav.style.transform = hide ? "translateY(-100%)" : "";
+    solid.forEach((c) => bar.classList.toggle(c, y > 24));
+    const hide = y > last && y > 480 && !nav.contains(document.activeElement);
+    nav.style.transform = hide ? "translateY(-140%)" : "";
     last = y;
     ticking = false;
   };

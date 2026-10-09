@@ -253,3 +253,18 @@ Each step gets its own commit pushed to the branch, with you as the author.
 3. **Framework:** Astro, with Motion (Framer Motion) for reveals and interactions. React components run on Preact's compat layer, which cuts the runtime from ~67 KB to ~10 KB gzipped. First-load JS is ~50 KB gzipped in total.
 4. **Tagline:** "Built from scratch. Measured honestly." "Systems that scale" was considered and rejected because nothing on the page demonstrates scale, while every project demonstrates measurement.
 5. **Open projects:** TARS, Autodevlab and Scraper aren't public yet, so they're listed as "private repo" without links.
+
+---
+
+## 11. Visual revision (supersedes parts of §6 and §7)
+
+The first build was correct but read as a plain document: one flat grey, no surfaces, an empty right half in the hero, and every section hidden until its island hydrated. The revision keeps the logbook concept and the single teal signal, and adds depth:
+
+- **Palette:** near-black `#0a0b0d` with raised surfaces (`#111317`), brighter signal `#2dd4bf`. An engineering-paper grid and a soft teal glow behind the hero and contact panel only.
+- **Type:** Inter + JetBrains Mono as before, plus Instrument Serif italic for one accent phrase per heading ("*Measured honestly.*").
+- **Hero:** two columns. The trace now lives in an instrument-panel card with four readouts and the "Now" line. Primary and secondary buttons plus GitHub/LinkedIn.
+- **Chapters:** each project is a card; media sits in a window-chrome frame; proof numbers are tiles; stack is chips. On phones the media comes first.
+- **Experience:** sticky org card with focus-area chips, numbered stage cards, highlighted "Now".
+- **Also built:** always-visible card grid (was collapsed behind a "+").
+- **Contact:** a single panel with a copy-to-clipboard email field and buttons.
+- **Reveals:** CSS + one IntersectionObserver. Content is visible by default and only hidden once JS is running, so nothing is blank without JS or on slow hydration.

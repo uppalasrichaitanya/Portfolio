@@ -1,38 +1,65 @@
 ---
-import Reveal from "../lib/motion";
+import SectionHeading from "./SectionHeading.astro";
 import { experience as x } from "../content/projects";
 ---
 
-<section id="experience" class="container-x scroll-mt-20 py-28 sm:py-40" aria-labelledby="exp-title">
-  <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
-    <Reveal client:visible className="lg:col-span-4">
-      <p class="label">Experience</p>
-      <h2 id="exp-title" class="mt-4 text-[clamp(1.9rem,4vw,2.75rem)] font-extrabold leading-tight tracking-[-0.03em] text-strong">
-        {x.org}
-      </h2>
-      <p class="mt-3 font-mono text-[13px] text-muted">{x.role} · {x.period}</p>
-      <p class="mt-6 max-w-[26rem] text-[17px] leading-relaxed text-muted">{x.summary}</p>
-    </Reveal>
+<section id="experience" class="container-x scroll-mt-24 py-28 sm:py-36" aria-labelledby="exp-title">
+  <SectionHeading
+    id="exp-title"
+    index="02"
+    eyebrow="Experience"
+    title="Where the work"
+    accent="happens."
+    aside="Research and engineering on real robot arms, with a tool built along the way when one didn't exist."
+  />
 
-    <ol class="relative lg:col-span-8">
-      <span aria-hidden class="absolute bottom-3 left-[5px] top-3 w-px bg-line"></span>
+  <div class="mt-14 grid gap-10 lg:grid-cols-12 lg:gap-12">
+    <div class="lg:col-span-4">
+      <div data-reveal class="card p-6 sm:p-7 lg:sticky lg:top-28">
+        <div class="flex items-center gap-4">
+          <span class="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-line-strong bg-sunk font-mono text-[13px] font-semibold text-signal" aria-hidden="true">TN</span>
+          <div>
+            <h3 class="text-[20px] font-bold leading-tight tracking-[-0.02em] text-strong">{x.org}</h3>
+            <p class="mt-1 font-mono text-[12px] text-muted">{x.role}</p>
+          </div>
+        </div>
+        <p class="mt-5 inline-flex items-center gap-2 rounded-full border border-signal/30 bg-signal-dim px-3 py-1 font-mono text-[12px] text-signal">
+          <span class="h-1.5 w-1.5 rounded-full bg-signal"></span>
+          {x.period}
+        </p>
+        <p class="mt-5 text-[15.5px] leading-relaxed text-muted">{x.summary}</p>
+        <ul class="mt-6 flex flex-wrap gap-1.5" aria-label="Areas">
+          {x.tags.map((t) => <li class="chip">{t}</li>)}
+        </ul>
+      </div>
+    </div>
+
+    <ol class="relative space-y-3 lg:col-span-8">
+      <span aria-hidden="true" class="absolute bottom-8 left-[1.6rem] top-8 w-px bg-gradient-to-b from-line-strong via-line-strong to-signal/60"></span>
       {
         x.steps.map((s, i) => (
-          <li class="relative pb-9 pl-10 last:pb-0">
+          <li data-reveal style={`--d:${i * 50}ms`} class="relative pl-14">
             <span
-              aria-hidden
+              aria-hidden="true"
               class:list={[
-                "absolute left-0 top-[0.45rem] h-[11px] w-[11px] rounded-full border",
-                s.now ? "border-signal bg-signal" : "border-line-strong bg-bg",
+                "absolute left-[1.6rem] top-6 grid h-7 w-7 -translate-x-1/2 place-items-center rounded-full border font-mono text-[10.5px]",
+                s.now ? "border-signal bg-signal text-[#04110f] shadow-[0_0_0_6px_rgba(45,212,191,0.12)]" : "border-line-strong bg-raised text-muted",
               ]}
-            />
-            <Reveal client:visible delay={i * 0.03}>
-              <p class="flex flex-wrap items-baseline gap-x-3 text-[17px] font-semibold text-strong">
-                {s.href ? <a href={s.href} class="trace-link">{s.title}</a> : s.title}
-                {s.now && <span class="font-mono text-[11px] font-normal uppercase tracking-wider text-signal">Now</span>}
+            >
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <div
+              class:list={[
+                "rounded-2xl border p-5 transition-colors sm:p-6",
+                s.now ? "border-signal/40 bg-signal-dim/50" : "border-line bg-raised/50 hover:border-line-strong",
+              ]}
+            >
+              <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[17px] font-semibold text-strong">
+                {s.href ? <a href={s.href} class="trace-link">{s.title} <span aria-hidden="true" class="text-signal">↗</span></a> : s.title}
+                {s.now && <span class="rounded-full bg-signal px-2 py-0.5 font-mono text-[10.5px] font-semibold uppercase tracking-wider text-[#04110f]">Now</span>}
               </p>
-              <p class="mt-1.5 max-w-[40rem] text-[16px] leading-relaxed text-muted">{s.body}</p>
-            </Reveal>
+              <p class="mt-2 text-[15.5px] leading-relaxed text-muted">{s.body}</p>
+            </div>
           </li>
         ))
       }

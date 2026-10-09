@@ -267,6 +267,7 @@ export const experience = {
   period: "Sep 2025 – present",
   summary:
     "From bringing up robot arms to training world action models: most of the work has been finding where the robot falls short and building what closes the gap.",
+  tags: ["ROS 2", "SO-101", "OpenMANIPULATOR-X", "PID control", "VLA models", "World action models", "Sim-to-real", "VR teleoperation"],
   steps: [
     { title: "Bring-up", body: "ROS 2 manipulation on the OpenMANIPULATOR-X and SO-101 arms." },
     {

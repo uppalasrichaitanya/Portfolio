@@ -64,7 +64,7 @@ function Bars({ facet, delay }: { facet: Facet; delay: number }) {
             <span className={`truncate font-mono text-[12px] ${r.ours ? "text-strong" : "text-muted"}`}>{r.label}</span>
             <span className="relative flex h-5 items-center">
               <m.span
-                className={`block h-full rounded-r-[4px] ${r.ours ? "bg-signal" : "bg-[#5a5a5a] group-hover:bg-[#6b6b6b]"}`}
+                className={`block h-full rounded-r-[4px] ${r.ours ? "bg-signal" : "bg-[#4a5059] group-hover:bg-[#5b626c]"}`}
                 style={{ width: `${(r.value / max) * 100}%`, transformOrigin: "left" }}
                 initial={reduce ? false : { scaleX: 0 }}
                 whileInView={{ scaleX: 1 }}
@@ -89,7 +89,7 @@ export default function BenchCharts() {
         ))}
       </div>
 
-      <div className="mt-8 rounded-lg border border-line p-4">
+      <div className="mt-8 rounded-xl border border-line bg-sunk/60 p-4 sm:p-5">
         <p className="text-[15px] font-semibold text-strong">Filtered search, 1% selectivity</p>
         <p className="mt-1 text-[13px] text-muted">Naive post-filtering → filter-aware graph traversal, ef=100</p>
         <dl className="mt-4 grid grid-cols-3 gap-4 font-mono text-[12px]">

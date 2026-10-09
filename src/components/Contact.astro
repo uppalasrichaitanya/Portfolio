@@ -1,27 +1,44 @@
 ---
 import CopyEmail from "./CopyEmail";
-import Reveal from "../lib/motion";
+import Icon from "./Icon.astro";
 import { contact } from "../content/projects";
 const year = new Date().getFullYear();
 ---
 
-<footer id="contact" class="container-x scroll-mt-20 pb-12 pt-28 sm:pt-40" aria-labelledby="contact-title">
-  <Reveal client:visible>
-    <p class="label">Contact</p>
-    <h2 id="contact-title" class="mt-4 max-w-[44rem] text-[clamp(1.9rem,4.5vw,3.25rem)] font-extrabold leading-[1.05] tracking-[-0.035em] text-strong">
-      Working on something hard? I'd like to hear about it.
-    </h2>
-    <div class="mt-10">
-      <CopyEmail client:idle email={contact.email} />
-    </div>
-  </Reveal>
+<footer id="contact" class="container-x scroll-mt-24 pb-10 pt-24 sm:pt-32" aria-labelledby="contact-title">
+  <div data-reveal class="card relative overflow-hidden !rounded-[2rem] px-5 py-14 sm:px-12 sm:py-20">
+    <div class="grid-paper" aria-hidden="true"></div>
+    <div class="glow -right-24 -top-24 h-80 w-80" aria-hidden="true"></div>
+    <div class="glow -bottom-40 -left-24 h-80 w-80 opacity-60" aria-hidden="true"></div>
 
-  <div class="mt-24 flex flex-col-reverse gap-6 border-t border-line pt-8 text-[14px] sm:flex-row sm:items-center sm:justify-between">
-    <p class="text-faint">© {year} Uppala Sri Chaitanya</p>
-    <ul class="flex gap-8">
-      <li><a href={contact.github} target="_blank" rel="noreferrer" class="trace-link text-muted">GitHub ↗</a></li>
-      <li><a href={contact.linkedin} target="_blank" rel="noreferrer" class="trace-link text-muted">LinkedIn ↗</a></li>
-      <li><a href={`mailto:${contact.email}`} class="trace-link text-muted">Email</a></li>
-    </ul>
+    <div class="relative">
+      <p class="label flex items-center gap-3">
+        <span class="text-signal">04</span>
+        <span class="h-px w-8 bg-line-strong" aria-hidden="true"></span>
+        Contact
+      </p>
+      <h2 id="contact-title" class="mt-5 max-w-[46rem] text-[clamp(2.2rem,5.5vw,4.2rem)] font-extrabold leading-[1] tracking-[-0.045em] text-strong">
+        Working on something hard? <span class="serif font-normal text-signal">I'd like to hear about it.</span>
+      </h2>
+      <p class="mt-6 max-w-[34rem] text-[17px] leading-relaxed text-muted">
+        Robotics, systems, research tooling, or a problem nobody has built the tool for yet. Email is the fastest way to
+        reach me.
+      </p>
+
+      <div class="mt-10">
+        <CopyEmail client:idle email={contact.email} />
+      </div>
+
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href={`mailto:${contact.email}`} class="btn btn-primary"><Icon name="mail" size={16} /> Email me</a>
+        <a href={contact.github} target="_blank" rel="noreferrer" class="btn btn-ghost"><Icon name="github" size={16} /> GitHub</a>
+        <a href={contact.linkedin} target="_blank" rel="noreferrer" class="btn btn-ghost"><Icon name="linkedin" size={16} /> LinkedIn</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-10 flex flex-col-reverse gap-4 px-1 text-[13.5px] sm:flex-row sm:items-center sm:justify-between">
+    <p class="text-faint">© {year} Uppala Sri Chaitanya · Built from scratch with Astro.</p>
+    <a href="#top" class="trace-link w-fit text-muted">Back to top ↑</a>
   </div>
 </footer>
