@@ -312,16 +312,23 @@ export const alsoBuilt: { name: string; desc: string; href?: string; npm?: strin
 
 export const about = {
   intro: [
-    "I'm a second-year Computer Science & Machine Learning student at Keshav Memorial College of Engineering, Hyderabad, and an AI Research Intern at Teleparadigm Networks, where I work on robot arms, from servo control up to world action models.",
+    "I'm a second-year Computer Science & Machine Learning student at Keshav Memorial College of Engineering (KMCE), Hyderabad, and an AI Research Intern at Teleparadigm Networks, where I work on robot arms, from servo control up to world action models.",
     "Outside the lab I build things to understand them: a vector database in Rust, an orchestrator for coding agents, a static-analysis mapper. Each one ships with its numbers, including the ones that don't flatter it.",
   ],
   facts: [
     { label: "Based in", value: "Hyderabad, India" },
-    { label: "Studying", value: "B.Tech CSM · KMEC '28" },
+    { label: "Studying", value: "B.Tech CSM · KMCE '28" },
     { label: "Research", value: "Paper under peer review" },
     { label: "Now", value: "Sim-to-real for the SO-101" },
   ],
 };
+
+export const stats: { value: number; decimals?: number; suffix?: string; pad?: number; label: string }[] = [
+  { value: 4, pad: 2, label: "systems built from scratch" },
+  { value: 0.9961, decimals: 4, label: "Recall@10, Quiver on SIFT1M" },
+  { value: 59, suffix: "%", label: "less servo tuning time" },
+  { value: 1, pad: 2, label: "paper under peer review" },
+];
 
 export const skills: { group: string; items: string[] }[] = [
   { group: "Languages", items: ["Rust", "TypeScript", "Python", "JavaScript", "Java"] },

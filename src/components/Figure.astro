@@ -8,15 +8,13 @@ interface Props {
   n: string;
   priority?: boolean;
   chrome?: string;
-  /** Shared-element name so the plate morphs between the home card and the project page. */
-  morph?: string;
   caption?: boolean;
 }
-const { media, n, priority, chrome, morph, caption = true } = Astro.props;
+const { media, n, priority, chrome, caption = true } = Astro.props;
 ---
 
 <figure>
-  <div class="plate" transition:name={morph}>
+  <div class="plate">
     {
       chrome && (
         <div class="chrome" aria-hidden="true">

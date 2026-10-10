@@ -1,29 +1,27 @@
 ---
 interface Props {
   id: string;
-  index: string;
+  /** Roman chapter number, e.g. "II". */
+  chapter: string;
   eyebrow: string;
-  /** Rendered as plain text, then `accent` in the serif italic. */
   title: string;
   accent?: string;
   aside?: string;
 }
-const { id, index, eyebrow, title, accent, aside } = Astro.props;
+const { id, chapter, eyebrow, title, accent, aside } = Astro.props;
 ---
 
-<div data-reveal class="flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
-  <div>
-    <p class="label flex items-center gap-3">
-      <span class="text-signal">{index}</span>
-      <span class="h-px w-8 bg-line-strong" aria-hidden="true"></span>
+<div class="grid gap-x-10 gap-y-6 lg:grid-cols-12 lg:items-end">
+  <div class="lg:col-span-8">
+    <p class="label flex items-center gap-3" data-reveal>
+      <span class="text-signal">Chapter {chapter}</span>
+      <span class="h-px w-10 bg-signal/50" aria-hidden="true"></span>
       {eyebrow}
     </p>
-    <h2 id={id} class="mask-reveal mt-4 text-[clamp(2.2rem,5vw,3.6rem)] font-extrabold leading-[1.04] tracking-[-0.04em] text-strong">
-      <span class="mask-line">
-        {title}
-        {accent && <span class="serif font-normal text-signal">{accent}</span>}
-      </span>
+    <h2 id={id} class="display mt-6 text-[clamp(3rem,8vw,7rem)]" data-split>
+      {title}
+      {accent && <em class="accent">{accent}</em>}
     </h2>
   </div>
-  {aside && <p class="max-w-[22rem] text-[15px] leading-relaxed text-muted">{aside}</p>}
+  {aside && <p class="max-w-[24rem] text-[15.5px] leading-relaxed text-muted lg:col-span-4 lg:justify-self-end" data-reveal style="--d:200ms">{aside}</p>}
 </div>

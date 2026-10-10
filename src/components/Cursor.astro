@@ -1,0 +1,59 @@
+<div id="cursor" transition:persist="cursor" aria-hidden="true" class="pointer-events-none fixed left-0 top-0 z-[150] hidden">
+  <div id="cursor-ring" class="absolute -left-5 -top-5 grid h-10 w-10 place-items-center rounded-full border border-signal/60 transition-[width,height,left,top,background-color,border-color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]">
+    <span id="cursor-label" class="font-mono text-[10px] uppercase tracking-[0.12em] text-[#1a0c03] opacity-0 transition-opacity duration-200"></span>
+  </div>
+  <div id="cursor-dot" class="absolute -left-[3px] -top-[3px] h-1.5 w-1.5 rounded-full bg-signal"></div>
+</div>
+
+<script>
+  import { gsap, finePointer, reduced } from "../lib/scroll";
+
+  if (finePointer() && !reduced()) {
+    const root = document.getElementById("cursor")!;
+    const ring = document.getElementById("cursor-ring")!;
+    const dot = document.getElementById("cursor-dot")!;
+    const label = document.getElementById("cursor-label")!;
+    root.classList.remove("hidden");
+    const apply = () => document.documentElement.classList.add("has-cursor");
+    apply();
+    document.addEventListener("astro:after-swap", apply);
+
+    const rx = gsap.quickTo(ring, "x", { duration: 0.55, ease: "power3" });
+    const ry = gsap.quickTo(ring, "y", { duration: 0.55, ease: "power3" });
+    const dx = gsap.quickTo(dot, "x", { duration: 0.08, ease: "power3" });
+    const dy = gsap.quickTo(dot, "y", { duration: 0.08, ease: "power3" });
+    gsap.set([ring, dot], { x: -100, y: -100 });
+
+    let mode = "";
+    const setMode = (m: string, text = "") => {
+      if (m === mode && label.textContent === text) return;
+      mode = m;
+      label.textContent = text;
+      const big = m === "label";
+      const hover = m === "hover";
+      ring.style.width = ring.style.height = big ? "84px" : hover ? "56px" : "40px";
+      ring.style.left = ring.style.top = big ? "-42px" : hover ? "-28px" : "-20px";
+      ring.style.backgroundColor = big ? "var(--color-signal)" : hover ? "rgb(255 138 61 / 0.1)" : "transparent";
+      label.style.opacity = big ? "1" : "0";
+      dot.style.opacity = big ? "0" : "1";
+    };
+
+    window.addEventListener(
+      "pointermove",
+      (e) => {
+        rx(e.clientX);
+        ry(e.clientY);
+        dx(e.clientX);
+        dy(e.clientY);
+        const t = e.target as Element | null;
+        const labelled = t?.closest?.<HTMLElement>("[data-cursor]");
+        if (labelled) setMode("label", labelled.dataset.cursor);
+        else if (t?.closest?.("a, button, [role=button], input, label")) setMode("hover");
+        else setMode("");
+      },
+      { passive: true },
+    );
+    document.addEventListener("pointerleave", () => gsap.set([ring, dot], { x: -100, y: -100 }));
+    document.addEventListener("astro:after-swap", () => setMode(""));
+  }
+</script>

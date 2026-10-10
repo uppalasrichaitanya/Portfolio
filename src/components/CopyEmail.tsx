@@ -21,13 +21,13 @@ export default function CopyEmail({ email }: { email: string }) {
         type="button"
         onClick={copy}
         aria-label={`Copy ${email} to clipboard`}
-        className="group flex w-full max-w-[40rem] items-center gap-3 rounded-2xl border border-line-strong bg-sunk/70 p-2 pl-4 text-left backdrop-blur transition-colors hover:border-signal/60 sm:pl-6"
+        className="group flex w-full max-w-[40rem] items-center gap-3 rounded-full border border-line-strong bg-sunk/70 p-2 pl-5 text-left backdrop-blur transition-colors hover:border-signal/60 sm:pl-6"
       >
         <span className="min-w-0 flex-1 truncate py-2 text-[clamp(1rem,2.6vw,1.6rem)] font-semibold tracking-[-0.02em] text-strong">
           {email}
         </span>
         <span
-          className={`relative inline-flex h-10 w-[6.5rem] shrink-0 items-center justify-center overflow-hidden rounded-xl font-mono text-[12px] transition-colors ${copied ? "bg-signal text-[#04110f]" : "bg-white/5 text-muted group-hover:text-strong"}`}
+          className={`relative inline-flex h-11 w-[7rem] shrink-0 items-center justify-center overflow-hidden rounded-full font-mono text-[11.5px] uppercase tracking-[0.1em] transition-colors ${copied ? "bg-signal text-[#1a0c03]" : "bg-white/5 text-muted group-hover:text-strong"}`}
           aria-live="polite"
         >
           <AnimatePresence mode="wait" initial={false}>
