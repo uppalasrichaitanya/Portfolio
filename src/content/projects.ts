@@ -263,7 +263,7 @@ export const projects: Project[] = [
 
 export const experience = {
   org: "Teleparadigm Networks",
-  role: "Robotics R&D",
+  role: "AI Research Intern",
   period: "Sep 2025 – present",
   summary:
     "From bringing up robot arms to training world action models: most of the work has been finding where the robot falls short and building what closes the gap.",
@@ -277,7 +277,7 @@ export const experience = {
     {
       title: "So I built one",
       body: "ServoPilot: servo configuration, telemetry and PID tuning that fixed the arm. Written up as a paper, now under double-blind review.",
-      href: "#servopilot",
+      href: "/work/servopilot",
     },
     { title: "Vision-language-action models", body: "Ran and evaluated MolmoAct and SmolVLA on our arms." },
     {
@@ -292,13 +292,14 @@ export const experience = {
   ],
 };
 
-export const alsoBuilt: { name: string; desc: string; href?: string }[] = [
+export const alsoBuilt: { name: string; desc: string; href?: string; npm?: string }[] = [
   { name: "TARS", desc: "A disciplined, multi-session coding-agent loop." },
   { name: "Keyriff", desc: "A local-first typing trainer. Everything runs and stays in your browser.", href: `${GH}/Keyriff` },
   {
     name: "Design-Taste",
-    desc: "An MCP server that gives coding agents design taste: rubrics, static checks, motion presets, render critique.",
+    desc: "A published MCP server (v1.0.1) with 7 tools that give coding agents design taste: rubrics, axe-core checks, a component registry and vision-model critique.",
     href: `${GH}/Design-Taste`,
+    npm: "https://www.npmjs.com/package/design-taste-mcp",
   },
   { name: "Autodevlab", desc: "A personal second brain: auto-captured dev activity, AI insights, a live dashboard." },
   { name: "Scraper", desc: "Job aggregation and career intelligence: Next.js, FastAPI, Celery crawlers, pgvector, Elasticsearch." },
@@ -309,8 +310,30 @@ export const alsoBuilt: { name: string; desc: string; href?: string }[] = [
   },
 ];
 
+export const about = {
+  intro: [
+    "I'm a second-year Computer Science & Machine Learning student at Keshav Memorial College of Engineering, Hyderabad, and an AI Research Intern at Teleparadigm Networks, where I work on robot arms, from servo control up to world action models.",
+    "Outside the lab I build things to understand them: a vector database in Rust, an orchestrator for coding agents, a static-analysis mapper. Each one ships with its numbers, including the ones that don't flatter it.",
+  ],
+  facts: [
+    { label: "Based in", value: "Hyderabad, India" },
+    { label: "Studying", value: "B.Tech CSM · KMEC '28" },
+    { label: "Research", value: "Paper under peer review" },
+    { label: "Now", value: "Sim-to-real for the SO-101" },
+  ],
+};
+
+export const skills: { group: string; items: string[] }[] = [
+  { group: "Languages", items: ["Rust", "TypeScript", "Python", "JavaScript", "Java"] },
+  { group: "Frameworks", items: ["React", "Next.js", "Node.js", "Electron", "Axum", "PyO3", "PyQt"] },
+  { group: "Systems", items: ["mmap storage", "Write-ahead logging", "SIMD (AVX2/FMA)", "HNSW / ANN search"] },
+  { group: "AI & agents", items: ["MCP", "Multi-agent orchestration", "LLM tool use", "Vision-model APIs"] },
+  { group: "Robotics", items: ["ROS 2", "PID control", "Real-time telemetry", "VLA models", "Sim-to-real"] },
+];
+
 export const contact = {
   email: "uppalasrichaitanya2007@gmail.com",
   github: GH,
   linkedin: "https://www.linkedin.com/in/u-sri-chaitanya/",
+  resume: "/resume.pdf",
 };

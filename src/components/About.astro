@@ -1,0 +1,53 @@
+---
+import SectionHeading from "./SectionHeading.astro";
+import { about, skills } from "../content/projects";
+---
+
+<section id="about" class="container-x scroll-mt-24 pt-24 sm:pt-32" aria-labelledby="about-title">
+  <SectionHeading id="about-title" index="01" eyebrow="About" title="Hello, I" accent="build to understand." />
+
+  <div class="mt-12 grid gap-10 lg:grid-cols-12 lg:gap-14">
+    <div class="space-y-5 lg:col-span-7" data-reveal>
+      {
+        about.intro.map((p, i) => (
+          <p class:list={["leading-relaxed", i === 0 ? "text-[clamp(1.15rem,2vw,1.4rem)] text-text" : "text-[17px] text-muted"]}>{p}</p>
+        ))
+      }
+    </div>
+
+    <dl class="grid grid-cols-2 self-start overflow-hidden rounded-2xl border border-line lg:col-span-5" data-reveal style="--d:100ms">
+      {
+        about.facts.map((f, i) => (
+          <div
+            class:list={[
+              "flex flex-col-reverse justify-end bg-raised/60 p-4 sm:p-5",
+              i % 2 === 0 && "border-r border-line",
+              i < 2 && "border-b border-line",
+            ]}
+          >
+            <dd class="mt-2 text-[15px] font-semibold leading-snug text-strong">{f.value}</dd>
+            <dt class="font-mono text-[11px] uppercase tracking-[0.08em] text-faint">{f.label}</dt>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+
+  <div class="mt-14" data-reveal>
+    <p class="label">Toolbox</p>
+    <dl class="mt-4 divide-y divide-line border-y border-line">
+      {
+        skills.map((s) => (
+          <div class="grid gap-3 py-4 sm:grid-cols-[10rem_1fr] sm:items-center sm:gap-6">
+            <dt class="text-[14px] font-semibold text-strong">{s.group}</dt>
+            <dd class="flex flex-wrap gap-1.5">
+              {s.items.map((t) => (
+                <span class="chip">{t}</span>
+              ))}
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</section>

@@ -2,6 +2,7 @@
 import "@fontsource-variable/inter/wght.css";
 import "@fontsource-variable/jetbrains-mono/wght.css";
 import "@fontsource/instrument-serif/latin-400-italic.css";
+import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
 
 interface Props {
@@ -10,6 +11,7 @@ interface Props {
 }
 const { title, description } = Astro.props;
 const ogImage = new URL("/og.png", Astro.site);
+const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
@@ -21,15 +23,16 @@ const ogImage = new URL("/og.png", Astro.site);
     <meta name="theme-color" content="#0a0b0d" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={Astro.site} />
+    <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={Astro.site} />
+    <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
     <meta name="twitter:card" content="summary_large_image" />
-    <script is:inline>
+    <ClientRouter fallback="swap" />
+    <script is:inline data-astro-rerun>
       if ("IntersectionObserver" in window) document.documentElement.classList.add("js");
     </script>
   </head>
@@ -55,7 +58,10 @@ const ogImage = new URL("/og.png", Astro.site);
         },
         { rootMargin: "0px 0px -8% 0px" },
       );
-      document.querySelectorAll("[data-reveal]").forEach((el) => io.observe(el));
+      // Runs on first load and after every client-side navigation.
+      document.addEventListener("astro:page-load", () => {
+        document.querySelectorAll("[data-reveal]:not([data-shown])").forEach((el) => io.observe(el));
+      });
     </script>
   </body>
 </html>

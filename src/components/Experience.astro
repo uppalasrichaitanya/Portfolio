@@ -6,63 +6,67 @@ import { experience as x } from "../content/projects";
 <section id="experience" class="container-x scroll-mt-24 py-28 sm:py-36" aria-labelledby="exp-title">
   <SectionHeading
     id="exp-title"
-    index="02"
+    index="03"
     eyebrow="Experience"
     title="Where the work"
     accent="happens."
     aside="Research and engineering on real robot arms, with a tool built along the way when one didn't exist."
   />
 
-  <div class="mt-14 grid gap-10 lg:grid-cols-12 lg:gap-12">
-    <div class="lg:col-span-4">
-      <div data-reveal class="card p-6 sm:p-7 lg:sticky lg:top-28">
-        <div class="flex items-center gap-4">
-          <span class="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-line-strong bg-sunk font-mono text-[13px] font-semibold text-signal" aria-hidden="true">TN</span>
-          <div>
-            <h3 class="text-[20px] font-bold leading-tight tracking-[-0.02em] text-strong">{x.org}</h3>
-            <p class="mt-1 font-mono text-[12px] text-muted">{x.role}</p>
-          </div>
-        </div>
-        <p class="mt-5 inline-flex items-center gap-2 rounded-full border border-signal/30 bg-signal-dim px-3 py-1 font-mono text-[12px] text-signal">
-          <span class="h-1.5 w-1.5 rounded-full bg-signal"></span>
-          {x.period}
+  <div data-reveal class="card mt-14 flex flex-col gap-6 p-6 sm:p-8 lg:flex-row lg:items-center lg:justify-between">
+    <div class="flex items-center gap-4">
+      <span class="grid h-14 w-14 shrink-0 place-items-center rounded-2xl border border-line-strong bg-sunk font-mono text-[14px] font-semibold text-signal" aria-hidden="true">TN</span>
+      <div>
+        <h3 class="text-[clamp(1.3rem,2.4vw,1.6rem)] font-bold leading-tight tracking-[-0.02em] text-strong">{x.org}</h3>
+        <p class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[12.5px] text-muted">
+          {x.role}
+          <span class="inline-flex items-center gap-2 rounded-full border border-signal/30 bg-signal-dim px-2.5 py-0.5 text-signal">
+            <span class="h-1.5 w-1.5 rounded-full bg-signal"></span>{x.period}
+          </span>
         </p>
-        <p class="mt-5 text-[15.5px] leading-relaxed text-muted">{x.summary}</p>
-        <ul class="mt-6 flex flex-wrap gap-1.5" aria-label="Areas">
-          {x.tags.map((t) => <li class="chip">{t}</li>)}
-        </ul>
       </div>
     </div>
-
-    <ol class="relative space-y-3 lg:col-span-8">
-      <span aria-hidden="true" class="absolute bottom-8 left-[1.6rem] top-8 w-px bg-gradient-to-b from-line-strong via-line-strong to-signal/60"></span>
-      {
-        x.steps.map((s, i) => (
-          <li data-reveal style={`--d:${i * 50}ms`} class="relative pl-14">
-            <span
-              aria-hidden="true"
-              class:list={[
-                "absolute left-[1.6rem] top-6 grid h-7 w-7 -translate-x-1/2 place-items-center rounded-full border font-mono text-[10.5px]",
-                s.now ? "border-signal bg-signal text-[#04110f] shadow-[0_0_0_6px_rgba(45,212,191,0.12)]" : "border-line-strong bg-raised text-muted",
-              ]}
-            >
-              {String(i + 1).padStart(2, "0")}
-            </span>
-            <div
-              class:list={[
-                "rounded-2xl border p-5 transition-colors sm:p-6",
-                s.now ? "border-signal/40 bg-signal-dim/50" : "border-line bg-raised/50 hover:border-line-strong",
-              ]}
-            >
-              <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[17px] font-semibold text-strong">
-                {s.href ? <a href={s.href} class="trace-link">{s.title} <span aria-hidden="true" class="text-signal">↗</span></a> : s.title}
-                {s.now && <span class="rounded-full bg-signal px-2 py-0.5 font-mono text-[10.5px] font-semibold uppercase tracking-wider text-[#04110f]">Now</span>}
-              </p>
-              <p class="mt-2 text-[15.5px] leading-relaxed text-muted">{s.body}</p>
-            </div>
-          </li>
-        ))
-      }
-    </ol>
+    <p class="max-w-[34rem] text-[15.5px] leading-relaxed text-muted">{x.summary}</p>
   </div>
+
+  <ul class="mt-5 flex flex-wrap gap-1.5" aria-label="Areas" data-reveal>
+    {x.tags.map((t) => <li class="chip">{t}</li>)}
+  </ul>
+
+  <ol class="exp-rail relative mt-12 grid gap-x-10 gap-y-3 lg:grid-cols-2">
+    {
+      x.steps.map((s, i) => (
+        <li data-reveal style={`--d:${(i % 2) * 60}ms`} class="relative pl-12">
+          <span
+            aria-hidden="true"
+            class:list={[
+              "absolute left-0 top-5 z-[1] grid h-8 w-8 place-items-center rounded-full border font-mono text-[11px]",
+              s.now ? "border-signal bg-signal text-[#04110f] shadow-[0_0_0_6px_rgba(45,212,191,0.12)]" : "border-line-strong bg-raised text-muted",
+            ]}
+          >
+            {String(i + 1).padStart(2, "0")}
+          </span>
+          {i < x.steps.length - 1 && <span aria-hidden="true" class="exp-link absolute bottom-[-0.75rem] left-4 top-[3.25rem] w-px bg-line-strong lg:hidden" />}
+          <div
+            class:list={[
+              "h-full rounded-2xl border p-5 transition-colors sm:p-6",
+              s.now ? "border-signal/40 bg-signal-dim/50" : "border-line bg-raised/50 hover:border-line-strong",
+            ]}
+          >
+            <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[17px] font-semibold text-strong">
+              {s.href ? (
+                <a href={s.href} class="trace-link">
+                  {s.title} <span aria-hidden="true" class="text-signal">↗</span>
+                </a>
+              ) : (
+                s.title
+              )}
+              {s.now && <span class="rounded-full bg-signal px-2 py-0.5 font-mono text-[10.5px] font-semibold uppercase tracking-wider text-[#04110f]">Now</span>}
+            </p>
+            <p class="mt-2 text-[15.5px] leading-relaxed text-muted">{s.body}</p>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
 </section>

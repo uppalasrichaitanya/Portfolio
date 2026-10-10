@@ -1,52 +1,63 @@
 ---
+import { contact } from "../content/projects";
+
 const links = [
-  { href: "#work", label: "Work" },
-  { href: "#experience", label: "Experience" },
+  { href: "/#about", label: "About" },
+  { href: "/#work", label: "Work" },
+  { href: "/#experience", label: "Experience", wide: true },
 ];
 ---
 
 <header
   id="site-nav"
+  transition:persist
   class="fixed inset-x-0 top-3 z-40 px-3 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] sm:top-4"
 >
   <div
     id="site-nav-bar"
-    class="mx-auto flex h-14 max-w-[72rem] items-center justify-between rounded-full border border-transparent pl-2 pr-2 transition-[background-color,border-color,box-shadow] duration-300"
+    class="relative mx-auto flex h-14 max-w-[72rem] items-center justify-between overflow-hidden rounded-full border border-transparent pl-2 pr-2 transition-[background-color,border-color,box-shadow] duration-300"
   >
-    <a href="#top" class="group flex items-center gap-3 rounded-full pr-3" aria-label="Uppala Sri Chaitanya, back to top">
+    <a href="/" class="group flex items-center gap-3 rounded-full pr-3" aria-label="Uppala Sri Chaitanya, home">
       <span
         class="grid h-10 w-10 place-items-center rounded-full border border-line-strong bg-raised font-mono text-[12px] font-semibold tracking-tight text-signal transition-colors group-hover:border-signal"
         aria-hidden="true">USC</span
       >
-      <span class="hidden text-[14px] font-semibold tracking-[-0.01em] text-strong sm:inline">Uppala Sri Chaitanya</span>
+      <span class="hidden text-[14px] font-semibold tracking-[-0.01em] text-strong md:inline">Uppala Sri Chaitanya</span>
     </a>
     <nav aria-label="Sections">
-      <ul class="flex items-center gap-1 text-[14px]">
+      <ul class="flex items-center gap-0.5 text-[14px]">
         {
           links.map((l) => (
-            <li>
-              <a href={l.href} class="rounded-full px-3 py-2 text-muted transition-colors hover:bg-white/5 hover:text-strong sm:px-4">
+            <li class:list={[l.wide && "hidden sm:block"]}>
+              <a href={l.href} class="rounded-full px-2.5 py-2 text-muted transition-colors hover:bg-white/5 hover:text-strong sm:px-3.5">
                 {l.label}
               </a>
             </li>
           ))
         }
         <li class="ml-1">
-          <a href="#contact" class="btn btn-primary !h-10 !px-4 !text-[14px]">Contact</a>
+          <a href={contact.resume} target="_blank" rel="noreferrer" class="btn btn-ghost !h-10 !px-3.5 !text-[14px]">Résumé</a>
+        </li>
+        <li class="ml-1.5">
+          <a href="#contact" class="btn btn-primary !h-10 !px-3.5 !text-[14px]">Contact</a>
         </li>
       </ul>
     </nav>
+    <span id="scroll-progress" class="pointer-events-none absolute bottom-0 left-0 h-px w-full origin-left bg-signal" aria-hidden="true"></span>
   </div>
 </header>
 
 <script>
   const nav = document.getElementById("site-nav")!;
   const bar = document.getElementById("site-nav-bar")!;
+  const progress = document.getElementById("scroll-progress")!;
   const solid = ["bg-raised/80", "border-line", "backdrop-blur-xl", "shadow-[0_10px_40px_-12px_rgba(0,0,0,0.7)]"];
   let last = window.scrollY;
   let ticking = false;
   const update = () => {
     const y = window.scrollY;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    progress.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`;
     solid.forEach((c) => bar.classList.toggle(c, y > 24));
     const hide = y > last && y > 480 && !nav.contains(document.activeElement);
     nav.style.transform = hide ? "translateY(-140%)" : "";
@@ -63,5 +74,9 @@ const links = [
     },
     { passive: true },
   );
+  document.addEventListener("astro:page-load", () => {
+    last = window.scrollY;
+    update();
+  });
   update();
 </script>

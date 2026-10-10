@@ -2,6 +2,7 @@
 import CopyEmail from "./CopyEmail";
 import Icon from "./Icon.astro";
 import { contact } from "../content/projects";
+const { index = "05" } = Astro.props as { index?: string };
 const year = new Date().getFullYear();
 ---
 
@@ -13,8 +14,14 @@ const year = new Date().getFullYear();
 
     <div class="relative">
       <p class="label flex items-center gap-3">
-        <span class="text-signal">04</span>
-        <span class="h-px w-8 bg-line-strong" aria-hidden="true"></span>
+        {
+          index && (
+            <>
+              <span class="text-signal">{index}</span>
+              <span class="h-px w-8 bg-line-strong" aria-hidden="true" />
+            </>
+          )
+        }
         Contact
       </p>
       <h2 id="contact-title" class="mt-5 max-w-[46rem] text-[clamp(2.2rem,5.5vw,4.2rem)] font-extrabold leading-[1] tracking-[-0.045em] text-strong">
@@ -33,12 +40,13 @@ const year = new Date().getFullYear();
         <a href={`mailto:${contact.email}`} class="btn btn-primary"><Icon name="mail" size={16} /> Email me</a>
         <a href={contact.github} target="_blank" rel="noreferrer" class="btn btn-ghost"><Icon name="github" size={16} /> GitHub</a>
         <a href={contact.linkedin} target="_blank" rel="noreferrer" class="btn btn-ghost"><Icon name="linkedin" size={16} /> LinkedIn</a>
+        <a href={contact.resume} target="_blank" rel="noreferrer" class="btn btn-ghost">Résumé <Icon name="arrow-up-right" size={14} /></a>
       </div>
     </div>
   </div>
 
   <div class="mt-10 flex flex-col-reverse gap-4 px-1 text-[13.5px] sm:flex-row sm:items-center sm:justify-between">
     <p class="text-faint">© {year} Uppala Sri Chaitanya · Built from scratch with Astro.</p>
-    <a href="#top" class="trace-link w-fit text-muted">Back to top ↑</a>
+    <a href="#main" class="trace-link w-fit text-muted">Back to top ↑</a>
   </div>
 </footer>

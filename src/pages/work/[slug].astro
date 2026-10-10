@@ -1,0 +1,167 @@
+---
+import type { GetStaticPaths } from "astro";
+import Base from "../../layouts/Base.astro";
+import Nav from "../../components/Nav.astro";
+import Contact from "../../components/Contact.astro";
+import Figure from "../../components/Figure.astro";
+import BenchCharts from "../../components/quiver/BenchCharts";
+import { projects, type Project } from "../../content/projects";
+
+export const getStaticPaths = (() =>
+  projects.map((p, i) => ({
+    params: { slug: p.id },
+    props: { p, next: projects[(i + 1) % projects.length] },
+  }))) satisfies GetStaticPaths;
+
+const { p, next } = Astro.props as { p: Project; next: Project };
+const c = p.case;
+const area = p.kicker.split("·")[1]?.trim().toLowerCase() ?? "";
+const figs = c.evidence.figures ?? [];
+---
+
+<Base title={`${p.title}: ${p.kicker.split("·")[0].trim()} · Uppala Sri Chaitanya`} description={p.oneLiner}>
+  <Nav />
+  <main id="main">
+    <header class="relative overflow-hidden">
+      <div class="glow left-[-12rem] top-[-16rem] h-[34rem] w-[48rem] opacity-50" aria-hidden="true"></div>
+      <div class="container-x relative pt-32 sm:pt-36">
+        <a href="/#work" class="hero-enter group inline-flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.08em] text-muted transition-colors hover:text-strong">
+          <span aria-hidden="true" class="transition-transform group-hover:-translate-x-0.5">←</span> All work
+        </a>
+
+        <div class="mt-10 grid gap-10 lg:grid-cols-12 lg:items-end">
+          <div class="relative lg:col-span-8">
+            <span aria-hidden="true" class="serif pointer-events-none absolute -top-20 right-0 hidden select-none text-[clamp(9rem,20vw,16rem)] leading-none text-white/[0.045] sm:block">{p.index}</span>
+            <p class="hero-enter label relative flex flex-wrap items-center gap-x-3 gap-y-1" style="animation-delay:60ms">
+              <span class="rounded-full border border-signal/40 bg-signal-dim px-2 py-0.5 text-signal">{p.index}</span>
+              {p.kicker}
+            </p>
+            <h1 class="relative mt-5 text-[clamp(3rem,9vw,7rem)] font-extrabold leading-[0.9] tracking-[-0.05em] text-strong">
+              <span transition:name={`${p.id}-title`} class="inline-block">{p.title}</span>
+            </h1>
+            <p class="hero-enter relative mt-6 max-w-[40rem] text-[clamp(1.1rem,1.8vw,1.3rem)] leading-relaxed text-muted" style="animation-delay:180ms">{p.oneLiner}</p>
+          </div>
+          <div class="hero-enter flex flex-wrap items-center gap-3 lg:col-span-4 lg:justify-end" style="animation-delay:260ms">
+            {
+              p.links.map((l, i) => (
+                <a href={l.href} target="_blank" rel="noreferrer" class:list={["btn", i === 0 ? "btn-primary" : "btn-ghost"]}>
+                  {l.label} <span aria-hidden="true">↗</span>
+                </a>
+              ))
+            }
+            {
+              p.linkNote && (
+                <p class="flex max-w-[22rem] items-center gap-2 text-[13px] text-faint">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <rect x="4" y="11" width="16" height="10" rx="2" />
+                    <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+                  </svg>
+                  {p.linkNote}
+                </p>
+              )
+            }
+          </div>
+        </div>
+
+        <dl class="hero-enter mt-12 grid grid-cols-3 overflow-hidden rounded-2xl border border-line" style="animation-delay:320ms">
+          {
+            p.proof.map((pr, i) => (
+              <div class:list={["flex flex-col-reverse justify-end bg-raised/60 p-4 sm:p-6", i < 2 && "border-r border-line"]}>
+                <dt class="mt-2 text-[12.5px] leading-snug text-faint sm:text-[13.5px]">{pr.label}</dt>
+                <dd class="tabular font-mono text-[clamp(1.1rem,3vw,2.2rem)] font-medium leading-none tracking-tight text-strong">{pr.value}</dd>
+              </div>
+            ))
+          }
+        </dl>
+
+        <ul class="hero-enter mt-5 flex flex-wrap gap-1.5" aria-label="Stack" style="animation-delay:360ms">
+          {p.stack.map((t) => <li class="chip">{t}</li>)}
+        </ul>
+
+        <div class="mt-12 sm:mt-16">
+          <Figure media={p.media} n={`${p.index}.1`} priority chrome={`${p.id} — ${area}`} morph={`${p.id}-media`} />
+        </div>
+      </div>
+    </header>
+
+    <article class="container-x pt-24 sm:pt-32" aria-label={`${p.title} case study`}>
+      <section class="grid gap-6 border-t border-line pt-10 lg:grid-cols-12 lg:gap-14" data-reveal>
+        <h2 class="label text-signal lg:col-span-3">01 · Problem</h2>
+        <p class="text-[clamp(1.25rem,2.4vw,1.75rem)] font-medium leading-snug tracking-[-0.015em] text-strong lg:col-span-9">{c.problem}</p>
+      </section>
+
+      <section class="mt-20 grid gap-6 border-t border-line pt-10 lg:grid-cols-12 lg:gap-14" data-reveal>
+        <h2 class="label text-signal lg:col-span-3">02 · Approach</h2>
+        <ol class="grid gap-4 sm:grid-cols-2 lg:col-span-9">
+          {
+            c.approach.map((a, i) => (
+              <li class="rounded-2xl border border-line bg-raised/50 p-5 sm:p-6">
+                <span class="font-mono text-[12px] text-signal">{String(i + 1).padStart(2, "0")}</span>
+                <p class="mt-3 text-[16px] leading-relaxed text-text">{a}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </section>
+
+      <section class="mt-20 grid gap-6 border-t border-line pt-10 lg:grid-cols-12 lg:gap-14">
+        <h2 class="label text-signal lg:col-span-3" data-reveal>03 · Evidence</h2>
+        <div class="min-w-0 space-y-12 lg:col-span-9">
+          {
+            c.evidence.metrics && (
+              <dl class="divide-y divide-line border-y border-line" data-reveal>
+                {c.evidence.metrics.map((mt) => (
+                  <div class="grid grid-cols-[1fr_auto] items-baseline gap-x-6 gap-y-1 py-5">
+                    <dt class="text-[16px] text-text">{mt.label}</dt>
+                    <dd class="tabular font-mono text-[clamp(1rem,2vw,1.35rem)] text-strong">{mt.value}</dd>
+                    {mt.note && <dd class="col-span-2 text-[13.5px] text-faint">{mt.note}</dd>}
+                  </div>
+                ))}
+              </dl>
+            )
+          }
+          {c.evidence.charts === "quiver" && <BenchCharts client:visible />}
+          {
+            figs.map((f, i) => (
+              <div data-reveal>
+                <Figure media={f} n={`${p.index}.${i + 2}`} />
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <section class="mt-20 grid gap-6 border-t border-line pt-10 lg:grid-cols-12 lg:gap-14" data-reveal>
+        <h2 class="label text-signal lg:col-span-3">04 · What was hard</h2>
+        <div class="card relative overflow-hidden p-6 sm:p-8 lg:col-span-9">
+          <div class="glow -right-24 -top-24 h-64 w-64 opacity-60" aria-hidden="true"></div>
+          <p class="relative text-[clamp(1.3rem,2.4vw,1.8rem)] font-bold tracking-[-0.02em] text-strong">{c.hard.title}</p>
+          <p class="relative mt-4 max-w-[46rem] text-[17px] leading-relaxed text-muted">{c.hard.body}</p>
+          {c.note && <p class="relative mt-6 inline-flex rounded-full border border-signal/30 bg-signal-dim px-3 py-1 font-mono text-[12px] text-signal">{c.note}</p>}
+        </div>
+      </section>
+
+      {
+        p.extra && (
+          <div class="mt-20" data-reveal>
+            <Figure media={p.extra} n={`${p.index}.${figs.length + 2}`} />
+          </div>
+        )
+      }
+
+      <a
+        href={`/work/${next.id}`}
+        class="group mt-28 flex flex-col gap-6 rounded-[2rem] border border-line bg-raised/60 p-6 transition-colors duration-300 hover:border-signal/50 sm:flex-row sm:items-end sm:justify-between sm:p-10"
+        data-reveal
+      >
+        <div>
+          <p class="label">Next project · {next.index}</p>
+          <p class="mt-4 text-[clamp(2.2rem,6vw,4.5rem)] font-extrabold leading-[0.95] tracking-[-0.045em] text-strong">{next.title}</p>
+          <p class="mt-4 max-w-[34rem] text-[16px] leading-relaxed text-muted">{next.oneLiner}</p>
+        </div>
+        <span class="grid h-14 w-14 shrink-0 place-items-center rounded-full border border-line-strong text-[20px] text-strong transition-[background-color,border-color,color,transform] duration-300 group-hover:translate-x-1 group-hover:border-signal group-hover:bg-signal group-hover:text-[#04110f]" aria-hidden="true">→</span>
+      </a>
+    </article>
+  </main>
+  <Contact index="" />
+</Base>

@@ -1,0 +1,68 @@
+---
+import type { Media } from "../content/projects";
+import AutoVideo from "./AutoVideo";
+import HnswDescent from "./quiver/HnswDescent";
+
+interface Props {
+  media: Media;
+  n: string;
+  priority?: boolean;
+  chrome?: string;
+  /** Shared-element name so the plate morphs between the home card and the project page. */
+  morph?: string;
+  caption?: boolean;
+}
+const { media, n, priority, chrome, morph, caption = true } = Astro.props;
+---
+
+<figure>
+  <div class="plate" transition:name={morph}>
+    {
+      chrome && (
+        <div class="chrome" aria-hidden="true">
+          <i />
+          <i />
+          <i />
+          <span class="ml-1 truncate">{chrome}</span>
+        </div>
+      )
+    }
+    {
+      media.kind === "video" && (
+        <AutoVideo
+          client:visible
+          webm={media.src.webm}
+          mp4={media.src.mp4}
+          poster={media.poster}
+          width={media.width}
+          height={media.height}
+          label={media.alt}
+          preferMp4={media.preferMp4}
+        />
+      )
+    }
+    {
+      media.kind === "image" && (
+        <img
+          src={media.src}
+          alt={media.alt}
+          width={media.width}
+          height={media.height}
+          loading={priority ? "eager" : "lazy"}
+          decoding="async"
+          class="block h-auto w-full"
+          style={media.pixelated ? "image-rendering:pixelated" : undefined}
+        />
+      )
+    }
+    {media.kind === "hnsw" && <HnswDescent client:visible />}
+  </div>
+  {
+    caption && (
+      <figcaption class="mt-3 flex gap-3 text-[13px] leading-snug text-faint">
+        <span class="shrink-0 font-mono text-muted">FIG. {n}</span>
+        <span>{media.caption}</span>
+      </figcaption>
+    )
+  }
+</figure>

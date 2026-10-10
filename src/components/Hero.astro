@@ -1,134 +1,56 @@
 ---
 import { experience, contact } from "../content/projects";
 import Icon from "./Icon.astro";
-const now = experience.steps.find((s) => s.now)!;
-
-const readouts = [
-  { value: "04", label: "systems built from scratch" },
-  { value: "0.9961", label: "Recall@10, Quiver on SIFT1M" },
-  { value: "59%", label: "less servo tuning time" },
-  { value: "01", label: "paper under review" },
-];
-
-// Step response on a 400×180 plot: rests, rises, overshoots, settles on the goal.
-const trace = "M0,150 L64,150 C84,150 88,30 108,28 C124,26 130,58 146,56 C160,54 168,49 182,50.5 C198,52 214,50 400,50";
+import PidScope from "./PidScope";
 ---
 
-<section id="top" class="relative overflow-hidden">
-  <div class="grid-paper" aria-hidden="true"></div>
-  <div class="glow left-1/2 top-[-12rem] h-[34rem] w-[48rem] -translate-x-1/2 opacity-70" aria-hidden="true"></div>
+<section id="top" class="relative flex min-h-[100svh] flex-col overflow-hidden">
+  <div class="glow left-[-10rem] top-[-14rem] h-[36rem] w-[52rem] opacity-60" aria-hidden="true"></div>
 
-  <div class="container-x relative grid min-h-[100svh] items-center gap-14 pb-20 pt-32 lg:grid-cols-12 lg:gap-12 lg:pt-28">
-    <div class="lg:col-span-7">
-      <a
-        href="#experience"
-        class="hero-enter inline-flex items-center gap-2.5 rounded-full border border-line-strong bg-raised/70 py-1.5 pl-2.5 pr-4 text-[13px] text-muted backdrop-blur transition-colors hover:border-signal hover:text-text"
-        style="animation-delay:40ms"
-      >
-        <span class="relative flex h-2 w-2">
-          <span class="absolute inset-0 rounded-full bg-signal/50 motion-safe:animate-ping [animation-duration:2.4s]"></span>
-          <span class="relative h-2 w-2 rounded-full bg-signal"></span>
-        </span>
-        {experience.role} at <span class="text-strong">{experience.org}</span>
-      </a>
+  <div class="container-x relative pt-28 sm:pt-32">
+    <p class="hero-enter label flex flex-wrap items-center gap-x-3 gap-y-1" style="animation-delay:40ms">
+      <span class="text-signal">{experience.role}</span>
+      <span class="h-px w-6 bg-line-strong" aria-hidden="true"></span>
+      {experience.org}
+    </p>
 
-      <h1
-        class="hero-enter mt-7 text-[clamp(3rem,8.4vw,6.4rem)] font-extrabold leading-[0.92] tracking-[-0.05em] text-strong"
-        style="animation-delay:120ms"
-      >
-        Uppala<br />Sri Chaitanya
-      </h1>
+    <h1
+      class="hero-enter mt-6 text-[clamp(3.3rem,9.6vw,8.4rem)] font-extrabold leading-[0.86] tracking-[-0.055em] text-strong"
+      style="animation-delay:120ms"
+    >
+      Uppala<br />Sri Chaitanya<span class="text-signal">.</span>
+    </h1>
 
-      <p
-        class="hero-enter mt-7 text-[clamp(1.6rem,3.4vw,2.6rem)] font-semibold leading-[1.1] tracking-[-0.03em] text-muted"
-        style="animation-delay:220ms"
-      >
-        Built from scratch.
-        <span class="serif whitespace-nowrap text-[1.12em] text-signal">Measured honestly.</span>
-      </p>
-
-      <p class="hero-enter mt-6 max-w-[36rem] text-[17px] leading-relaxed text-muted sm:text-[18px]" style="animation-delay:300ms">
-        Systems &amp; robotics engineer. I build from first principles (an agent orchestrator, a code cartographer, a
-        servo-tuning suite and a vector database) and put the evidence next to every claim.
-      </p>
-
-      <div class="hero-enter mt-10 flex flex-wrap items-center gap-2.5 sm:gap-3" style="animation-delay:420ms">
-        <a href="#work" class="btn btn-primary">
-          See the work
-          <span aria-hidden="true">↓</span>
-        </a>
-        <a href="#contact" class="btn btn-ghost hidden sm:inline-flex">Get in touch</a>
-        <span class="mx-1 hidden h-6 w-px bg-line-strong sm:block" aria-hidden="true"></span>
-        <a href={contact.github} target="_blank" rel="noreferrer" class="icon-btn" aria-label="GitHub">
-          <Icon name="github" />
-        </a>
-        <a href={contact.linkedin} target="_blank" rel="noreferrer" class="icon-btn" aria-label="LinkedIn">
-          <Icon name="linkedin" />
-        </a>
-      </div>
-    </div>
-
-    <!-- Instrument panel: the signal trace as a live readout. -->
-    <div class="hero-enter lg:col-span-5" style="animation-delay:260ms">
-      <div class="card overflow-hidden !rounded-[1.25rem]">
-        <div class="chrome !h-10 !bg-transparent">
-          <i></i><i></i><i></i>
-          <span class="ml-1">step_response.log</span>
-          <span class="ml-auto flex items-center gap-1.5 text-signal">
-            <span class="h-1.5 w-1.5 rounded-full bg-signal"></span>settled
-          </span>
-        </div>
-
-        <div class="relative px-4 pb-2 pt-5 sm:px-5">
-          <svg class="hero-trace block h-auto w-full overflow-visible" viewBox="0 0 400 180" aria-hidden="true">
-            <defs>
-              <linearGradient id="trace-fill" x1="0" x2="0" y1="0" y2="1">
-                <stop offset="0" stop-color="#2dd4bf" stop-opacity="0.22"></stop>
-                <stop offset="1" stop-color="#2dd4bf" stop-opacity="0"></stop>
-              </linearGradient>
-            </defs>
-            {[30, 70, 110, 150].map((y) => <line x1="0" x2="400" y1={y} y2={y} stroke="rgba(255,255,255,0.05)" />)}
-            {[80, 160, 240, 320].map((x) => <line x1={x} x2={x} y1="0" y2="170" stroke="rgba(255,255,255,0.05)" />)}
-            <line class="target" x1="0" y1="50" x2="400" y2="50" stroke="rgba(255,255,255,0.35)" stroke-dasharray="4 5"></line>
-            <text class="note" x="398" y="42" text-anchor="end" fill="#7c838d" font-family="JetBrains Mono Variable, monospace" font-size="10">goal</text>
-            <text class="note" x="112" y="18" fill="#2dd4bf" font-family="JetBrains Mono Variable, monospace" font-size="10">overshoot</text>
-            <path class="area" d={`${trace} L400,170 L0,170 Z`} fill="url(#trace-fill)"></path>
-            <path
-              class="signal"
-              pathLength="1"
-              d={trace}
-              fill="none"
-              stroke="#2dd4bf"
-              stroke-width="2.25"
-              stroke-linejoin="round"
-              stroke-linecap="round"></path>
-            <circle class="tip" cx="400" cy="50" r="4" fill="#2dd4bf"></circle>
-            <circle class="tip" cx="400" cy="50" r="10" fill="#2dd4bf" fill-opacity="0.18"></circle>
-          </svg>
-        </div>
-
-        <dl class="grid grid-cols-2 border-t border-line">
-          {
-            readouts.map((r, i) => (
-              <div class:list={["flex flex-col-reverse px-4 py-4 sm:px-5", i % 2 === 0 && "border-r border-line", i < 2 && "border-b border-line"]}>
-                <dt class="mt-2 text-[12.5px] leading-snug text-faint">{r.label}</dt>
-                <dd class="tabular font-mono text-[clamp(1.25rem,2.4vw,1.6rem)] font-medium leading-none tracking-tight text-strong">
-                  {r.value}
-                </dd>
-              </div>
-            ))
-          }
-        </dl>
-
-        <a
-          href="#experience"
-          class="group flex items-center gap-3 border-t border-line bg-signal-dim/40 px-4 py-3.5 text-[13px] sm:px-5"
+    <div class="mt-7 grid gap-7 lg:grid-cols-12 lg:items-end">
+      <div class="lg:col-span-7">
+        <p
+          class="hero-enter text-[clamp(1.5rem,3.2vw,2.4rem)] font-semibold leading-[1.1] tracking-[-0.03em] text-muted"
+          style="animation-delay:220ms"
         >
-          <span class="font-mono text-[11px] uppercase tracking-wider text-signal">Now</span>
-          <span class="text-text">{now.title}: actuator model for the SO-101 arm</span>
-          <span class="ml-auto text-faint transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>
-        </a>
+          Built from scratch. <span class="serif whitespace-nowrap text-[1.12em] text-signal">Measured honestly.</span>
+        </p>
+        <p class="hero-enter mt-5 max-w-[36rem] text-[17px] leading-relaxed text-muted" style="animation-delay:300ms">
+          Systems &amp; robotics engineer. A vector database in Rust, an orchestrator for coding agents, a static-analysis
+          mapper, and the servo-tuning tool our lab now runs on.
+        </p>
+      </div>
+
+      <div class="hero-enter flex flex-wrap items-center gap-2.5 sm:gap-3 lg:col-span-5 lg:justify-end" style="animation-delay:400ms">
+        <a href="#work" class="btn btn-primary">See the work <span aria-hidden="true">↓</span></a>
+        <a href={contact.resume} class="btn btn-ghost hidden sm:inline-flex" target="_blank" rel="noreferrer">Résumé <Icon name="arrow-up-right" size={14} /></a>
+        <a href={contact.github} target="_blank" rel="noreferrer" class="icon-btn" aria-label="GitHub"><Icon name="github" /></a>
+        <a href={contact.linkedin} target="_blank" rel="noreferrer" class="icon-btn" aria-label="LinkedIn"><Icon name="linkedin" /></a>
       </div>
     </div>
+  </div>
+
+  <!-- The signal, live: a PID loop the visitor steers. -->
+  <div class="hero-enter relative mt-10 flex min-h-[13rem] flex-1 sm:mt-12" style="animation-delay:520ms">
+    <div class="container-x relative flex-1 pb-8 pt-1">
+      <div class="absolute inset-x-4 bottom-8 top-1 sm:inset-x-8">
+        <PidScope client:idle hint="Move your cursor (or tap): this is the loop ServoPilot tunes." />
+      </div>
+    </div>
+    <div class="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-line" aria-hidden="true"></div>
   </div>
 </section>

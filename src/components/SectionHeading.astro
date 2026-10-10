@@ -18,9 +18,11 @@ const { id, index, eyebrow, title, accent, aside } = Astro.props;
       <span class="h-px w-8 bg-line-strong" aria-hidden="true"></span>
       {eyebrow}
     </p>
-    <h2 id={id} class="mt-4 text-[clamp(2.2rem,5vw,3.6rem)] font-extrabold leading-[1] tracking-[-0.04em] text-strong">
-      {title}
-      {accent && <span class="serif font-normal text-signal">{accent}</span>}
+    <h2 id={id} class="mask-reveal mt-4 text-[clamp(2.2rem,5vw,3.6rem)] font-extrabold leading-[1.04] tracking-[-0.04em] text-strong">
+      <span class="mask-line">
+        {title}
+        {accent && <span class="serif font-normal text-signal">{accent}</span>}
+      </span>
     </h2>
   </div>
   {aside && <p class="max-w-[22rem] text-[15px] leading-relaxed text-muted">{aside}</p>}

@@ -6,8 +6,8 @@ import Experience from "../components/Experience.astro";
 import Contact from "../components/Contact.astro";
 import AlsoBuilt from "../components/AlsoBuilt.astro";
 import SectionHeading from "../components/SectionHeading.astro";
-import Chapter from "../components/Chapter";
-import ChapterIndex from "../components/ChapterIndex";
+import About from "../components/About.astro";
+import ProjectCard from "../components/ProjectCard.astro";
 import { projects } from "../content/projects";
 ---
 
@@ -16,21 +16,21 @@ import { projects } from "../content/projects";
   description="Built from scratch, measured honestly. DUM-E, Cartograph, ServoPilot and Quiver, plus robotics research at Teleparadigm Networks."
 >
   <Nav />
-  <ChapterIndex client:idle entries={projects.map((p) => ({ id: p.id, index: p.index, title: p.title }))} />
   <main id="main">
     <Hero />
+    <About />
 
-    <section id="work" class="container-x scroll-mt-24 pt-16 sm:pt-24" aria-labelledby="work-title">
+    <section id="work" class="container-x scroll-mt-24 pt-28 sm:pt-36" aria-labelledby="work-title">
       <SectionHeading
         id="work-title"
-        index="01"
+        index="02"
         eyebrow="Selected work"
         title="Four systems,"
         accent="built from zero."
-        aside="Each one has its numbers on the card and a full case study behind it: problem, approach, evidence, and what was hard."
+        aside="Each one has its numbers on the card and its own page behind it: problem, approach, evidence, and what was hard."
       />
       <div class="mt-14 flex flex-col gap-5 sm:gap-8">
-        {projects.map((p, i) => <Chapter client:visible p={p} flip={i % 2 === 1} />)}
+        {projects.map((p, i) => <ProjectCard p={p} flip={i % 2 === 1} />)}
       </div>
     </section>
 
@@ -40,8 +40,10 @@ import { projects } from "../content/projects";
   <Contact />
 </Base>
 
-<script>
-  // Chapters hydrate when visible, so bring a deep-linked case into view; it opens itself on hydration.
-  const m = window.location.hash.match(/^#case-([\w-]+)$/);
-  if (m) document.getElementById(m[1])?.scrollIntoView({ block: "start" });
+<script is:inline>
+  // Case studies used to open inline at #case-<id>; they live on their own pages now.
+  (function () {
+    var m = window.location.hash.match(/^#case-([\w-]+)$/);
+    if (m) window.location.replace("/work/" + m[1]);
+  })();
 </script>
