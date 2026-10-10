@@ -29,7 +29,10 @@ export default function AutoVideo({ webm, mp4, poster, width, height, label, pre
       ([entry]) => {
         if (entry.isIntersecting) {
           if (video.preload !== "auto") video.preload = "auto";
-          video.play().catch(() => setManual(true));
+          video.play().catch((err: DOMException) => {
+            // An AbortError only means a pause interrupted play (fast scroll); real blocking is NotAllowedError.
+            if (err?.name === "NotAllowedError") setManual(true);
+          });
         } else {
           video.pause();
         }
@@ -72,7 +75,7 @@ export default function AutoVideo({ webm, mp4, poster, width, height, label, pre
             if (v.paused) v.play();
             else v.pause();
           }}
-          className="absolute bottom-3 right-3 rounded-full border border-line-strong bg-bg/90 px-3 py-1.5 font-mono text-xs text-text transition-colors hover:border-signal"
+          className="absolute bottom-3 right-3 z-[3] rounded-full border border-line-strong bg-bg/90 px-3 py-1.5 font-mono text-xs text-text transition-colors hover:border-signal"
         >
           {playing ? "Pause" : "Play"}
         </button>

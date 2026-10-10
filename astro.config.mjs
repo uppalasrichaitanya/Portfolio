@@ -5,7 +5,7 @@ import tailwindcss from "@tailwindcss/vite";
 // Preact with React compat: the components are written against React's API
 // (and Motion's React bindings) but ship ~4 KB of runtime instead of ~60 KB.
 export default defineConfig({
-  site: "https://uppalasrichaitanya.vercel.app",
+  site: "https://chaitanya-dev-portfolio.vercel.app",
   integrations: [preact({ compat: true })],
   vite: {
     plugins: [tailwindcss()],

@@ -261,7 +261,7 @@ export default function HnswDescent() {
           <button
             type="button"
             onClick={() => setRun((r) => r + 1)}
-            className="absolute right-3 top-3 rounded-full border border-line px-3 py-1 font-mono text-[11px] uppercase tracking-wider text-muted transition-colors hover:border-signal hover:text-strong"
+            className="absolute right-3 top-3 z-[3] rounded-full border border-line bg-sunk/80 px-3 py-1 font-mono text-[11px] uppercase tracking-wider text-muted transition-colors hover:border-signal hover:text-strong"
           >
             Replay
           </button>

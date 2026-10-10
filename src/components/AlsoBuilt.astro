@@ -7,7 +7,7 @@ import { alsoBuilt } from "../content/projects";
 <section id="also" class="container-x scroll-mt-24 pb-8" aria-labelledby="also-title">
   <SectionHeading
     id="also-title"
-    index="03"
+    index="04"
     eyebrow="Also built"
     title="More from the"
     accent="workbench."
@@ -40,8 +40,11 @@ import { alsoBuilt } from "../content/projects";
               <h3 class="mt-6 text-[19px] font-bold tracking-[-0.02em] text-strong">{it.name}</h3>
               <p class="mt-2 flex-1 text-[14.5px] leading-relaxed text-muted">{it.desc}</p>
               {it.href && (
-                <span class="mt-5 flex items-center gap-2 font-mono text-[12px] text-faint transition-colors group-hover:text-text">
-                  <Icon name="github" size={14} /> View on GitHub
+                <span class="mt-5 flex items-center gap-4 font-mono text-[12px] text-faint">
+                  <span class="flex items-center gap-2 transition-colors group-hover:text-text">
+                    <Icon name="github" size={14} /> GitHub
+                  </span>
+                  {it.npm && <span class="rounded-full border border-signal/30 bg-signal-dim px-2 py-0.5 text-signal">on npm</span>}
                 </span>
               )}
             </Tag>

@@ -326,3 +326,80 @@
     stroke-dashoffset: 0;
   }
 }
+
+/* Section titles rise out of a mask as their heading reveals. */
+.mask-reveal {
+  overflow: hidden;
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+}
+.mask-line {
+  display: inline-block;
+  transition: transform 900ms var(--ease-out-soft) 80ms;
+}
+.js [data-reveal]:not([data-shown]) .mask-line {
+  transform: translateY(105%);
+}
+
+/* Project cards: the whole card is the link; media eases in on hover. */
+.project-card {
+  transition: border-color 300ms var(--ease-out-soft);
+}
+.project-card:hover {
+  border-color: rgb(45 212 191 / 0.35);
+}
+.project-card .plate :is(img, video) {
+  transition: transform 700ms var(--ease-out-soft);
+}
+.project-card:hover .plate :is(img, video) {
+  transform: scale(1.025);
+}
+
+/* Experience rail (mobile): fills with signal as each stage scrolls through. */
+@supports (animation-timeline: view()) {
+  .exp-link {
+    background:
+      linear-gradient(var(--color-signal), var(--color-signal)) top / 100% 0% no-repeat,
+      var(--color-line-strong);
+    animation: rail-fill linear both;
+    animation-timeline: view();
+    animation-range: entry 60% cover 55%;
+  }
+  @keyframes rail-fill {
+    to {
+      background-size:
+        100% 100%,
+        auto;
+    }
+  }
+}
+
+/* Page transitions: a short cross-fade; titles and media morph between pages. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 320ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+::view-transition-group(*) {
+  animation-duration: 520ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mask-line,
+  .js [data-reveal]:not([data-shown]) .mask-line {
+    transform: none;
+    transition: none;
+  }
+  .project-card:hover .plate :is(img, video) {
+    transform: none;
+  }
+  .exp-link {
+    animation: none;
+  }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

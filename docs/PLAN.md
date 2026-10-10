@@ -268,3 +268,15 @@ The first build was correct but read as a plain document: one flat grey, no surf
 - **Also built:** always-visible card grid (was collapsed behind a "+").
 - **Contact:** a single panel with a copy-to-clipboard email field and buttons.
 - **Reveals:** CSS + one IntersectionObserver. Content is visible by default and only hidden once JS is running, so nothing is blank without JS or on slow hydration.
+
+---
+
+## 12. v3: a hero of its own, About, project pages (supersedes parts of §3, §7, §11)
+
+- **Hero:** the instrument-panel card is gone. The name is set large and full width. Under it, a live PID loop (`PidScope.tsx`) runs on a canvas across the full hero: the visitor's cursor (or a tap) sets the target, and the trace overshoots and settles like a real servo. It is ServoPilot's job, made playable. It idles with automatic steps, pauses off-screen, and draws a static step response under reduced motion or without JS.
+- **About** (new, between the hero and Work): a first-person intro from the résumé, a facts grid (location, degree, research, now) and a toolbox taken from the résumé's skills.
+- **Projects have their own pages** at `/work/<id>`. Home cards are whole-card links. Astro View Transitions morph the title and media from the card into the page. Each page: header, proof, full-width media, then Problem → Approach → Evidence → What was hard, then the next project. Old `#case-<id>` links redirect.
+- **Experience:** removed the sticky org card (it trailed the scroll and read as a bug). It's now a full-width header plus a two-column stage grid; on mobile the rail fills with signal as you scroll.
+- **Motion:** a nav scroll-progress line, masked heading reveals, a hover zoom on card media, page cross-fades. All of it is off under reduced motion.
+- **Résumé** served at `/resume.pdf` from the nav, the hero and Contact. The role is updated to "AI Research Intern". Design-Taste is marked "on npm".
+- **References reviewed:** neokit.app (project pages, big serif index numbers, progress bar) and aelradi.engineer (facts strip). pavanteja-me.vercel.app is a Teleparadigm colleague, so its devices (HUD labels, coordinates) were deliberately not borrowed.
