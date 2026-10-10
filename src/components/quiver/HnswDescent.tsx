@@ -154,7 +154,7 @@ function Scene({ play, reduce }: { play: boolean; reduce: boolean }) {
                       cx={pp.x}
                       cy={pp.y}
                       r={isResult ? 4.2 : layer === 0 ? 2.8 : 3.6}
-                      fill="#2dd4bf"
+                      fill="#ff8a3d"
                       initial={reduce ? false : { opacity: 0, scale: 0.4 }}
                       animate={shown ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.4 }}
                       style={{ transformOrigin: `${pp.x}px ${pp.y}px` }}
@@ -166,8 +166,8 @@ function Scene({ play, reduce }: { play: boolean; reduce: boolean }) {
             })}
             {/* The query's position on this layer. */}
             <g opacity={0.9}>
-              <circle cx={q.x} cy={q.y} r={7} fill="none" stroke="#2dd4bf" strokeOpacity={0.55} strokeDasharray="2 2.5" />
-              <path d={`M${q.x - 3},${q.y} h6 M${q.x},${q.y - 3} v6`} stroke="#2dd4bf" strokeOpacity={0.8} />
+              <circle cx={q.x} cy={q.y} r={7} fill="none" stroke="#ff8a3d" strokeOpacity={0.55} strokeDasharray="2 2.5" />
+              <path d={`M${q.x - 3},${q.y} h6 M${q.x},${q.y - 3} v6`} stroke="#ff8a3d" strokeOpacity={0.8} />
             </g>
           </g>
         );
@@ -183,7 +183,7 @@ function Scene({ play, reduce }: { play: boolean; reduce: boolean }) {
             y1={a.y}
             x2={b.x}
             y2={b.y}
-            stroke="#2dd4bf"
+            stroke="#ff8a3d"
             strokeWidth={2}
             strokeLinecap="round"
             initial={reduce ? false : { pathLength: 0, opacity: 0 }}
@@ -203,7 +203,7 @@ function Scene({ play, reduce }: { play: boolean; reduce: boolean }) {
             y1={a.y}
             x2={b.x}
             y2={b.y}
-            stroke="#2dd4bf"
+            stroke="#ff8a3d"
             strokeWidth={1.25}
             strokeDasharray="3 4"
             initial={reduce ? false : { pathLength: 0, opacity: 0 }}

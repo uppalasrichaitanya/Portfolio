@@ -1,0 +1,232 @@
+---
+import SectionHeading from "./SectionHeading.astro";
+import Figure from "./Figure.astro";
+import { projects } from "../content/projects";
+---
+
+<section id="work" class="relative z-10 scroll-mt-24 pt-32 sm:pt-44" aria-labelledby="work-title">
+  <div class="container-x">
+    <SectionHeading
+      id="work-title"
+      chapter="II"
+      eyebrow="Selected work"
+      title="Four systems,"
+      accent="built from zero."
+      aside="Each with its numbers up front and a full case study behind it. Scroll to move through them."
+    />
+  </div>
+
+  <div id="track-wrap" class="track-wrap relative mt-16 sm:mt-20">
+    <div class="track-stage">
+      <div id="track" class="track">
+        {
+          projects.map((p, i) => {
+            const href = `/work/${p.id}`;
+            const area = p.kicker.split("·")[1]?.trim().toLowerCase() ?? "";
+            return (
+              <article class="slide" aria-labelledby={`${p.id}-title`} id={p.id}>
+                <span class="slide-index display" aria-hidden="true">{p.index}</span>
+                <div class="slide-text">
+                  <p class="label flex flex-wrap items-center gap-x-3 gap-y-1">
+                    <span class="text-signal">Frame {p.index}</span>
+                    <span class="h-px w-6 bg-line-strong" aria-hidden="true" />
+                    {p.kicker}
+                  </p>
+                  <h3 id={`${p.id}-title`} class="display mt-5 text-[clamp(3.2rem,6vw,6.2rem)]">
+                    <a href={href} data-curtain={p.title} class="transition-colors hover:text-signal">{p.title}</a>
+                  </h3>
+                  <p class="mt-5 max-w-[32rem] text-[16.5px] leading-relaxed text-muted">{p.oneLiner}</p>
+
+                  <dl class="mt-8 grid max-w-[34rem] grid-cols-3 gap-5 border-t border-line pt-6">
+                    {p.proof.map((pr) => (
+                      <div class="flex min-w-0 flex-col-reverse justify-end">
+                        <dt class="mt-2 text-[12px] leading-snug text-faint">{pr.label}</dt>
+                        <dd class="display tabular text-[clamp(1.6rem,2.6vw,2.4rem)] leading-none !text-signal">{pr.value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+
+                  <ul class="mt-6 flex max-w-[34rem] flex-wrap gap-1.5" aria-label="Stack">
+                    {p.stack.slice(0, 5).map((t) => (
+                      <li class="chip">{t}</li>
+                    ))}
+                  </ul>
+
+                  <a href={href} data-curtain={p.title} data-magnetic="0.25" class="btn btn-primary mt-8">
+                    Read case study <span aria-hidden="true">→</span>
+                  </a>
+                </div>
+
+                <div class="slide-media relative" data-cursor="View">
+                  <div class="slide-media-inner relative">
+                    <Figure media={p.media} n={`${p.index}.1`} priority={i === 0} chrome={`${p.id} — ${area}`} caption={false} />
+                    <a href={href} data-curtain={p.title} class="absolute inset-0 z-[4] rounded-[14px]" tabindex="-1" aria-hidden="true" />
+                  </div>
+                </div>
+              </article>
+            );
+          })
+        }
+      </div>
+
+      <div class="track-hud container-x" aria-hidden="true">
+        <span class="label"><span id="track-count" class="text-signal">01</span> / {String(projects.length).padStart(2, "0")}</span>
+        <span class="relative h-px flex-1 bg-line-strong"><span id="track-bar" class="absolute inset-y-0 left-0 w-full origin-left scale-x-0 bg-signal"></span></span>
+        <span class="label">Scroll →</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .track {
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+    padding-inline: 1.25rem;
+  }
+  .slide {
+    position: relative;
+    display: grid;
+    gap: 2.5rem;
+  }
+  .slide-media {
+    order: -1;
+  }
+  .slide-index {
+    position: absolute;
+    top: -3.5rem;
+    right: 0;
+    font-size: clamp(8rem, 30vw, 22rem);
+    font-style: italic;
+    line-height: 0.8;
+    color: transparent;
+    -webkit-text-stroke: 1px rgb(255 138 61 / 0.25);
+    pointer-events: none;
+    user-select: none;
+    z-index: -1;
+  }
+  .track-hud {
+    display: none;
+  }
+  @media (min-width: 640px) {
+    .track {
+      padding-inline: 2.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .slide {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      align-items: center;
+      gap: 4rem;
+    }
+    .slide-media {
+      order: 0;
+    }
+    .slide-index {
+      top: auto;
+      bottom: -2rem;
+      left: -1rem;
+      right: auto;
+      font-size: clamp(14rem, 24vw, 26rem);
+    }
+
+    /* Horizontal mode (desktop + motion): sticky stage, JS moves the track. */
+    :global(html.motion) .track-stage {
+      position: sticky;
+      top: 0;
+      height: 100svh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    :global(html.motion) .track {
+      flex-direction: row;
+      gap: 8vw;
+      width: max-content;
+      padding-inline: max(2.5rem, calc((100vw - 80rem) / 2 + 2.5rem));
+      will-change: transform;
+    }
+    :global(html.motion) .slide {
+      width: min(84vw, 76rem);
+      flex-shrink: 0;
+    }
+    :global(html.motion) .slide-media-inner {
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+    :global(html.motion) .track-hud {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 2.25rem;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+  }
+</style>
+
+<script>
+  import { gsap, onPage, reduced } from "../lib/scroll";
+
+  onPage(() => {
+    const wrap = document.getElementById("track-wrap");
+    const track = document.getElementById("track");
+    if (!wrap || !track || reduced()) return;
+
+    const mm = gsap.matchMedia();
+    mm.add("(min-width: 1024px)", () => {
+      const distance = () => track.scrollWidth - window.innerWidth;
+      const setHeight = () => (wrap.style.height = `${distance() + window.innerHeight}px`);
+      setHeight();
+
+      const count = document.getElementById("track-count");
+      const bar = document.getElementById("track-bar");
+      const slides = gsap.utils.toArray<HTMLElement>(".slide", track);
+
+      const move = gsap.to(track, {
+        x: () => -distance(),
+        ease: "none",
+        scrollTrigger: {
+          trigger: wrap,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 0.8,
+          invalidateOnRefresh: true,
+          onRefreshInit: setHeight,
+          onUpdate: (st) => {
+            if (bar) gsap.set(bar, { scaleX: st.progress });
+            const idx = Math.min(slides.length - 1, Math.round(st.progress * (slides.length - 1)));
+            if (count) count.textContent = String(idx + 1).padStart(2, "0");
+          },
+        },
+      });
+
+      // Each frame's media swings in from depth and settles as it reaches the centre.
+      slides.forEach((slide) => {
+        const media = slide.querySelector<HTMLElement>(".slide-media-inner");
+        const text = slide.querySelector<HTMLElement>(".slide-text");
+        const index = slide.querySelector<HTMLElement>(".slide-index");
+        const st = { trigger: slide, containerAnimation: move, scrub: true, start: "left right", end: "center center" };
+        if (media) gsap.fromTo(media, { rotateY: -28, rotateX: 6, scale: 0.82, transformPerspective: 1400 }, { rotateY: 0, rotateX: 0, scale: 1, ease: "power2.out", scrollTrigger: st });
+        if (text) gsap.fromTo(text, { x: 120, opacity: 0.15 }, { x: 0, opacity: 1, ease: "power2.out", scrollTrigger: st });
+        if (index) gsap.fromTo(index, { xPercent: 40 }, { xPercent: -10, ease: "none", scrollTrigger: { trigger: slide, containerAnimation: move, scrub: true, start: "left right", end: "right left" } });
+      });
+
+      return () => (wrap.style.height = "");
+    });
+
+    // Stacked layout (tablet/phone): frames rise in one by one.
+    mm.add("(max-width: 1023px)", () => {
+      gsap.utils.toArray<HTMLElement>(".slide", track).forEach((slide) => {
+        gsap.from(slide, { y: 80, opacity: 0, duration: 1.2, ease: "expo.out", scrollTrigger: { trigger: slide, start: "top 85%" } });
+      });
+    });
+
+    return () => mm.revert();
+  });
+</script>

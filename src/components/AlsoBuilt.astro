@@ -4,53 +4,56 @@ import Icon from "./Icon.astro";
 import { alsoBuilt } from "../content/projects";
 ---
 
-<section id="also" class="container-x scroll-mt-24 pb-8" aria-labelledby="also-title">
-  <SectionHeading
-    id="also-title"
-    index="04"
-    eyebrow="Also built"
-    title="More from the"
-    accent="workbench."
-    aside={`${alsoBuilt.length} smaller projects: agents, tooling, local-first apps and crawlers.`}
-  />
+<section id="also" class="relative z-10 scroll-mt-24 pb-10" aria-labelledby="also-title">
+  <div class="container-x">
+    <SectionHeading
+      id="also-title"
+      chapter="IV"
+      eyebrow="Also built"
+      title="More from the"
+      accent="workbench."
+      aside={`${alsoBuilt.length} smaller projects: agents, tooling, local-first apps and crawlers.`}
+    />
 
-  <ul class="mt-14 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-    {
-      alsoBuilt.map((it, i) => {
-        const Tag = it.href ? "a" : "div";
-        return (
-          <li data-reveal style={`--d:${(i % 3) * 60}ms`}>
-            <Tag
-              {...(it.href ? { href: it.href, target: "_blank", rel: "noreferrer" } : {})}
-              class:list={[
-                "group flex h-full flex-col rounded-2xl border border-line bg-raised/60 p-5 transition-[border-color,background-color,transform] duration-300 sm:p-6",
-                it.href && "hover:-translate-y-0.5 hover:border-signal/50 hover:bg-raised",
-              ]}
-            >
-              <div class="flex items-center justify-between gap-4">
-                <span class="font-mono text-[11px] text-faint">{String(i + 1).padStart(2, "0")}</span>
-                {it.href ? (
-                  <span class="text-faint transition-colors group-hover:text-signal">
-                    <Icon name="arrow-up-right" size={18} />
+    <ul class="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 [perspective:1200px]">
+      {
+        alsoBuilt.map((it, i) => {
+          const Tag = it.href ? "a" : "div";
+          return (
+            <li data-reveal style={`--d:${(i % 3) * 90}ms`}>
+              <Tag
+                {...(it.href ? { href: it.href, target: "_blank", rel: "noreferrer" } : {})}
+                class="card group relative flex h-full flex-col overflow-hidden p-6 transition-[border-color] duration-500 hover:border-signal/40 sm:p-7"
+                data-spotlight
+                data-tilt="7"
+              >
+                <div class="flex items-center justify-between gap-4">
+                  <span class="display text-[2.6rem] italic leading-none text-transparent [-webkit-text-stroke:1px_rgb(255_138_61/0.5)]">
+                    {String(i + 1).padStart(2, "0")}
                   </span>
-                ) : (
-                  <span class="chip !py-0.5 !text-[10.5px]">private repo</span>
+                  {it.href ? (
+                    <span class="grid h-10 w-10 place-items-center rounded-full border border-line-strong text-faint transition-[color,background-color,border-color,transform] duration-500 group-hover:rotate-45 group-hover:border-signal group-hover:bg-signal group-hover:text-[#1a0c03]">
+                      <Icon name="arrow-up-right" size={16} />
+                    </span>
+                  ) : (
+                    <span class="chip !py-1 !text-[10.5px]">private repo</span>
+                  )}
+                </div>
+                <h3 class="display mt-8 text-[2.1rem]">{it.name}</h3>
+                <p class="mt-3 flex-1 text-[14.5px] leading-relaxed text-muted">{it.desc}</p>
+                {it.href && (
+                  <span class="mt-6 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.1em] text-faint">
+                    <span class="flex items-center gap-2 transition-colors group-hover:text-text">
+                      <Icon name="github" size={14} /> GitHub
+                    </span>
+                    {it.npm && <span class="rounded-full border border-signal/40 bg-signal-dim px-2 py-0.5 text-signal">on npm</span>}
+                  </span>
                 )}
-              </div>
-              <h3 class="mt-6 text-[19px] font-bold tracking-[-0.02em] text-strong">{it.name}</h3>
-              <p class="mt-2 flex-1 text-[14.5px] leading-relaxed text-muted">{it.desc}</p>
-              {it.href && (
-                <span class="mt-5 flex items-center gap-4 font-mono text-[12px] text-faint">
-                  <span class="flex items-center gap-2 transition-colors group-hover:text-text">
-                    <Icon name="github" size={14} /> GitHub
-                  </span>
-                  {it.npm && <span class="rounded-full border border-signal/30 bg-signal-dim px-2 py-0.5 text-signal">on npm</span>}
-                </span>
-              )}
-            </Tag>
-          </li>
-        );
-      })
-    }
-  </ul>
+              </Tag>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </div>
 </section>

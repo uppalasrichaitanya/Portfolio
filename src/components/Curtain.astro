@@ -1,0 +1,68 @@
+<!-- Page transition: an amber curtain rises, names where you're going, then lifts away. -->
+<div id="curtain" transition:persist="curtain" aria-hidden="true" class="pointer-events-none fixed inset-0 z-[120] invisible">
+  <div id="curtain-panel" class="absolute inset-0 flex flex-col items-center justify-center bg-signal px-6 text-center text-[#1a0c03]">
+    <p id="curtain-kicker" class="font-mono text-[11px] uppercase tracking-[0.16em] opacity-70">Opening</p>
+    <p id="curtain-title" class="display mt-4 text-[clamp(3rem,10vw,8.5rem)] !text-[#1a0c03]"></p>
+  </div>
+</div>
+
+<script>
+  import { gsap, reduced, getLenis } from "../lib/scroll";
+
+  const root = document.getElementById("curtain")!;
+  const panel = document.getElementById("curtain-panel")!;
+  const title = document.getElementById("curtain-title")!;
+  const kicker = document.getElementById("curtain-kicker")!;
+  let covering = false;
+
+  document.addEventListener("astro:before-preparation", (e) => {
+    if (reduced()) return;
+    const ev = e as Event & { sourceElement?: Element; to: URL; loader: () => Promise<void> };
+    const src = ev.sourceElement?.closest<HTMLElement>("[data-curtain]");
+    const home = ev.to.pathname === "/";
+    title.textContent = src?.dataset.curtain ?? (home ? "Index" : "Case study");
+    kicker.textContent = src?.dataset.curtainKicker ?? (home ? "Back to" : "Opening");
+    covering = true;
+    document.documentElement.classList.add("curtain-on");
+    getLenis()?.stop();
+    root.classList.remove("invisible");
+    const intro = gsap.fromTo(
+      panel,
+      { yPercent: 100, borderTopLeftRadius: "50% 18vh", borderTopRightRadius: "50% 18vh" },
+      { yPercent: 0, borderTopLeftRadius: "0% 0vh", borderTopRightRadius: "0% 0vh", duration: 0.85, ease: "expo.inOut" },
+    );
+    gsap.fromTo([kicker, title], { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: "expo.out", stagger: 0.06, delay: 0.35 });
+    const load = ev.loader;
+    ev.loader = async () => {
+      await Promise.all([load(), intro.then()]);
+    };
+  });
+
+  // Astro swaps <html> attributes on navigation; keep entrances held while covered.
+  document.addEventListener("astro:after-swap", () => {
+    if (covering) document.documentElement.classList.add("curtain-on");
+  });
+
+  document.addEventListener("astro:page-load", () => {
+    if (!covering) return;
+    covering = false;
+    getLenis()?.start();
+    gsap
+      .timeline({ delay: 0.15 })
+      .to([kicker, title], { y: -30, opacity: 0, duration: 0.4, ease: "power2.in" })
+      .add(() => document.documentElement.classList.remove("curtain-on"), 0.25)
+      .to(panel, { yPercent: -100, borderBottomLeftRadius: "50% 18vh", borderBottomRightRadius: "50% 18vh", duration: 0.95, ease: "expo.inOut" }, 0.15)
+      .add(() => {
+        root.classList.add("invisible");
+        gsap.set(panel, { clearProps: "borderRadius" });
+      });
+  });
+</script>
+
+<style is:global>
+  /* Hold page entrances until the curtain lifts. */
+  html.curtain-on .hero-enter,
+  html.curtain-on .hero-letter {
+    animation-play-state: paused;
+  }
+</style>

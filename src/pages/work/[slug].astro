@@ -17,151 +17,252 @@ const { p, next } = Astro.props as { p: Project; next: Project };
 const c = p.case;
 const area = p.kicker.split("·")[1]?.trim().toLowerCase() ?? "";
 const figs = c.evidence.figures ?? [];
+const toc = [
+  { id: "problem", label: "Problem" },
+  { id: "approach", label: "Approach" },
+  { id: "evidence", label: "Evidence" },
+  { id: "hard", label: "What was hard" },
+];
 ---
 
-<Base title={`${p.title}: ${p.kicker.split("·")[0].trim()} · Uppala Sri Chaitanya`} description={p.oneLiner}>
+<Base title={`${p.title}: case study · Uppala Sri Chaitanya`} description={p.oneLiner}>
   <Nav />
-  <main id="main">
-    <header class="relative overflow-hidden">
-      <div class="glow left-[-12rem] top-[-16rem] h-[34rem] w-[48rem] opacity-50" aria-hidden="true"></div>
-      <div class="container-x relative pt-32 sm:pt-36">
-        <a href="/#work" class="hero-enter group inline-flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.08em] text-muted transition-colors hover:text-strong">
-          <span aria-hidden="true" class="transition-transform group-hover:-translate-x-0.5">←</span> All work
+  <main id="main" class="relative">
+    <div class="glow -left-40 -top-40 h-[40rem] w-[60rem] opacity-50" aria-hidden="true"></div>
+
+    <!-- Cover -->
+    <header class="container-x relative pt-32 sm:pt-40">
+      <div class="hero-enter flex items-center justify-between gap-6" style="animation-delay:100ms">
+        <a href="/#work" data-curtain="Index" data-curtain-kicker="Back to" class="group inline-flex items-center gap-2 font-mono text-[11.5px] uppercase tracking-[0.14em] text-muted transition-colors hover:text-strong">
+          <span aria-hidden="true" class="transition-transform group-hover:-translate-x-1">←</span> All work
         </a>
+        <p class="label">Case study <span class="text-signal">{p.index}</span> / {String(projects.length).padStart(2, "0")}</p>
+      </div>
 
-        <div class="mt-10 grid gap-10 lg:grid-cols-12 lg:items-end">
-          <div class="relative lg:col-span-8">
-            <span aria-hidden="true" class="serif pointer-events-none absolute -top-20 right-0 hidden select-none text-[clamp(9rem,20vw,16rem)] leading-none text-white/[0.045] sm:block">{p.index}</span>
-            <p class="hero-enter label relative flex flex-wrap items-center gap-x-3 gap-y-1" style="animation-delay:60ms">
-              <span class="rounded-full border border-signal/40 bg-signal-dim px-2 py-0.5 text-signal">{p.index}</span>
-              {p.kicker}
-            </p>
-            <h1 class="relative mt-5 text-[clamp(3rem,9vw,7rem)] font-extrabold leading-[0.9] tracking-[-0.05em] text-strong">
-              <span transition:name={`${p.id}-title`} class="inline-block">{p.title}</span>
-            </h1>
-            <p class="hero-enter relative mt-6 max-w-[40rem] text-[clamp(1.1rem,1.8vw,1.3rem)] leading-relaxed text-muted" style="animation-delay:180ms">{p.oneLiner}</p>
-          </div>
-          <div class="hero-enter flex flex-wrap items-center gap-3 lg:col-span-4 lg:justify-end" style="animation-delay:260ms">
-            {
-              p.links.map((l, i) => (
-                <a href={l.href} target="_blank" rel="noreferrer" class:list={["btn", i === 0 ? "btn-primary" : "btn-ghost"]}>
-                  {l.label} <span aria-hidden="true">↗</span>
-                </a>
-              ))
-            }
-            {
-              p.linkNote && (
-                <p class="flex max-w-[22rem] items-center gap-2 text-[13px] text-faint">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                    <rect x="4" y="11" width="16" height="10" rx="2" />
-                    <path d="M8 11V7a4 4 0 0 1 8 0v4" />
-                  </svg>
-                  {p.linkNote}
-                </p>
-              )
-            }
-          </div>
-        </div>
+      <p class="hero-enter label mt-14 sm:mt-20" style="animation-delay:200ms">{p.kicker}</p>
+      <h1 class="display mt-5 text-[clamp(4.5rem,15vw,13rem)] leading-[0.82]">
+        {[...p.title].map((ch, i) => <span class="hero-letter" style={`--i:${i}`}>{ch}</span>)}
+      </h1>
 
-        <dl class="hero-enter mt-12 grid grid-cols-3 overflow-hidden rounded-2xl border border-line" style="animation-delay:320ms">
+      <div class="mt-10 grid gap-10 border-t border-line pt-8 lg:grid-cols-12">
+        <p class="hero-enter text-[clamp(1.25rem,2.1vw,1.6rem)] leading-[1.35] text-text lg:col-span-7" style="animation-delay:700ms">{p.oneLiner}</p>
+        <div class="hero-enter flex flex-wrap content-start items-center gap-3 lg:col-span-5 lg:justify-end" style="animation-delay:820ms">
           {
-            p.proof.map((pr, i) => (
-              <div class:list={["flex flex-col-reverse justify-end bg-raised/60 p-4 sm:p-6", i < 2 && "border-r border-line"]}>
-                <dt class="mt-2 text-[12.5px] leading-snug text-faint sm:text-[13.5px]">{pr.label}</dt>
-                <dd class="tabular font-mono text-[clamp(1.1rem,3vw,2.2rem)] font-medium leading-none tracking-tight text-strong">{pr.value}</dd>
-              </div>
+            p.links.map((l, i) => (
+              <a href={l.href} target="_blank" rel="noreferrer" class:list={["btn", i === 0 ? "btn-primary" : "btn-ghost"]} data-magnetic="0.3">
+                {l.label} <span aria-hidden="true">↗</span>
+              </a>
             ))
           }
-        </dl>
-
-        <ul class="hero-enter mt-5 flex flex-wrap gap-1.5" aria-label="Stack" style="animation-delay:360ms">
-          {p.stack.map((t) => <li class="chip">{t}</li>)}
-        </ul>
-
-        <div class="mt-12 sm:mt-16">
-          <Figure media={p.media} n={`${p.index}.1`} priority chrome={`${p.id} — ${area}`} morph={`${p.id}-media`} />
+          {
+            p.linkNote && (
+              <p class="flex max-w-[24rem] items-center gap-2 rounded-full border border-line-strong px-4 py-2.5 text-[13px] text-muted">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <rect x="4" y="11" width="16" height="10" rx="2" />
+                  <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+                </svg>
+                {p.linkNote}
+              </p>
+            )
+          }
         </div>
+      </div>
+
+      <dl class="hero-enter mt-12 grid grid-cols-3 gap-px overflow-hidden rounded-2xl border border-line bg-line" style="animation-delay:950ms">
+        {
+          p.proof.map((pr) => (
+            <div class="flex flex-col-reverse justify-end bg-raised p-4 sm:p-7">
+              <dt class="mt-3 text-[12.5px] leading-snug text-muted sm:text-[13.5px]">{pr.label}</dt>
+              <dd class="display tabular text-[clamp(1.8rem,4.5vw,3.6rem)] leading-none !text-signal">{pr.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+      <ul class="hero-enter mt-5 flex flex-wrap gap-1.5" aria-label="Stack" style="animation-delay:1050ms">
+        {p.stack.map((t) => <li class="chip">{t}</li>)}
+      </ul>
+
+      <div class="clip-reveal mt-16 sm:mt-24" data-cursor={p.media.kind === "hnsw" ? undefined : "Look"}>
+        <Figure media={p.media} n={`${p.index}.1`} priority chrome={`${p.id} — ${area}`} />
       </div>
     </header>
 
-    <article class="container-x pt-24 sm:pt-32" aria-label={`${p.title} case study`}>
-      <section class="grid gap-6 border-t border-line pt-10 lg:grid-cols-12 lg:gap-14" data-reveal>
-        <h2 class="label text-signal lg:col-span-3">01 · Problem</h2>
-        <p class="text-[clamp(1.25rem,2.4vw,1.75rem)] font-medium leading-snug tracking-[-0.015em] text-strong lg:col-span-9">{c.problem}</p>
-      </section>
+    <!-- Case -->
+    <div class="container-x relative mt-28 grid gap-12 sm:mt-40 lg:grid-cols-12 lg:gap-16">
+      <aside class="hidden lg:col-span-3 lg:block">
+        <nav class="sticky top-28" aria-label="Case study sections">
+          <p class="label">Contents</p>
+          <ol id="toc" class="mt-5 space-y-1 border-l border-line">
+            {
+              toc.map((t, i) => (
+                <li>
+                  <a href={`#${t.id}`} data-toc={t.id} class="toc-link group -ml-px flex items-center gap-3 border-l border-transparent py-2 pl-4 text-[14px] text-muted transition-colors hover:text-strong">
+                    <span class="font-mono text-[11px] text-faint group-[.is-active]:text-signal">{String(i + 1).padStart(2, "0")}</span>
+                    {t.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ol>
+        </nav>
+      </aside>
 
-      <section class="mt-20 grid gap-6 border-t border-line pt-10 lg:grid-cols-12 lg:gap-14" data-reveal>
-        <h2 class="label text-signal lg:col-span-3">02 · Approach</h2>
-        <ol class="grid gap-4 sm:grid-cols-2 lg:col-span-9">
-          {
-            c.approach.map((a, i) => (
-              <li class="rounded-2xl border border-line bg-raised/50 p-5 sm:p-6">
-                <span class="font-mono text-[12px] text-signal">{String(i + 1).padStart(2, "0")}</span>
-                <p class="mt-3 text-[16px] leading-relaxed text-text">{a}</p>
-              </li>
-            ))
-          }
-        </ol>
-      </section>
+      <article class="min-w-0 space-y-32 lg:col-span-9" aria-label={`${p.title} case study`}>
+        <section id="problem" class="scroll-mt-28">
+          <p class="label" data-reveal><span class="text-signal">01</span> — The problem</p>
+          <p class="display mt-6 text-[clamp(2rem,3.8vw,3.3rem)] leading-[1.08]" data-split>{c.problem}</p>
+        </section>
 
-      <section class="mt-20 grid gap-6 border-t border-line pt-10 lg:grid-cols-12 lg:gap-14">
-        <h2 class="label text-signal lg:col-span-3" data-reveal>03 · Evidence</h2>
-        <div class="min-w-0 space-y-12 lg:col-span-9">
-          {
-            c.evidence.metrics && (
-              <dl class="divide-y divide-line border-y border-line" data-reveal>
-                {c.evidence.metrics.map((mt) => (
-                  <div class="grid grid-cols-[1fr_auto] items-baseline gap-x-6 gap-y-1 py-5">
-                    <dt class="text-[16px] text-text">{mt.label}</dt>
-                    <dd class="tabular font-mono text-[clamp(1rem,2vw,1.35rem)] text-strong">{mt.value}</dd>
-                    {mt.note && <dd class="col-span-2 text-[13.5px] text-faint">{mt.note}</dd>}
-                  </div>
-                ))}
-              </dl>
-            )
-          }
-          {c.evidence.charts === "quiver" && <BenchCharts client:visible />}
-          {
-            figs.map((f, i) => (
-              <div data-reveal>
-                <Figure media={f} n={`${p.index}.${i + 2}`} />
-              </div>
-            ))
-          }
-        </div>
-      </section>
+        <section id="approach" class="scroll-mt-28">
+          <p class="label" data-reveal><span class="text-signal">02</span> — The approach</p>
+          <ol id="steps" class="relative mt-10 space-y-10">
+            <span class="absolute bottom-3 left-[1.15rem] top-3 w-px bg-line-strong" aria-hidden="true">
+              <span id="steps-fill" class="steps-fill absolute inset-0 origin-top bg-signal shadow-[0_0_14px_rgba(255,138,61,0.6)]"></span>
+            </span>
+            {
+              c.approach.map((a, i) => (
+                <li class="relative pl-16" data-reveal style={`--d:${i * 60}ms`}>
+                  <span class="display absolute left-0 top-0 grid h-[2.3rem] w-[2.3rem] place-items-center rounded-full border border-signal/50 bg-bg text-[1.15rem] italic !text-signal">
+                    {i + 1}
+                  </span>
+                  <p class="pt-1 text-[clamp(1.05rem,1.6vw,1.25rem)] leading-relaxed text-text">{a}</p>
+                </li>
+              ))
+            }
+          </ol>
+        </section>
 
-      <section class="mt-20 grid gap-6 border-t border-line pt-10 lg:grid-cols-12 lg:gap-14" data-reveal>
-        <h2 class="label text-signal lg:col-span-3">04 · What was hard</h2>
-        <div class="card relative overflow-hidden p-6 sm:p-8 lg:col-span-9">
-          <div class="glow -right-24 -top-24 h-64 w-64 opacity-60" aria-hidden="true"></div>
-          <p class="relative text-[clamp(1.3rem,2.4vw,1.8rem)] font-bold tracking-[-0.02em] text-strong">{c.hard.title}</p>
-          <p class="relative mt-4 max-w-[46rem] text-[17px] leading-relaxed text-muted">{c.hard.body}</p>
-          {c.note && <p class="relative mt-6 inline-flex rounded-full border border-signal/30 bg-signal-dim px-3 py-1 font-mono text-[12px] text-signal">{c.note}</p>}
-        </div>
-      </section>
-
-      {
-        p.extra && (
-          <div class="mt-20" data-reveal>
-            <Figure media={p.extra} n={`${p.index}.${figs.length + 2}`} />
+        <section id="evidence" class="scroll-mt-28">
+          <p class="label" data-reveal><span class="text-signal">03</span> — The evidence</p>
+          <div class="mt-10 space-y-14">
+            {
+              c.evidence.metrics && (
+                <dl class="grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2" data-reveal>
+                  {c.evidence.metrics.map((mt) => (
+                    <div class="flex flex-col-reverse justify-end bg-raised p-6">
+                      <dt class="mt-3 text-[15px] text-text">
+                        {mt.label}
+                        {mt.note && <span class="mt-1 block text-[13px] text-faint">{mt.note}</span>}
+                      </dt>
+                      <dd class="display tabular text-[clamp(1.8rem,3vw,2.6rem)] leading-none !text-signal">{mt.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              )
+            }
+            {
+              c.evidence.charts === "quiver" && (
+                <div data-reveal>
+                  <BenchCharts client:visible />
+                </div>
+              )
+            }
+            {
+              figs.map((f, i) => (
+                <div data-reveal data-cursor={f.kind === "hnsw" ? undefined : "Look"}>
+                  <Figure media={f} n={`${p.index}.${i + 2}`} />
+                </div>
+              ))
+            }
           </div>
-        )
-      }
+        </section>
 
-      <a
-        href={`/work/${next.id}`}
-        class="group mt-28 flex flex-col gap-6 rounded-[2rem] border border-line bg-raised/60 p-6 transition-colors duration-300 hover:border-signal/50 sm:flex-row sm:items-end sm:justify-between sm:p-10"
-        data-reveal
-      >
+        <section id="hard" class="scroll-mt-28">
+          <p class="label" data-reveal><span class="text-signal">04</span> — What was hard</p>
+          <div class="card mt-8 overflow-hidden p-7 sm:p-12" data-reveal data-spotlight>
+            <div class="glow -right-24 -top-24 h-72 w-72 opacity-70" aria-hidden="true"></div>
+            <p class="display relative text-[clamp(2.2rem,4vw,3.6rem)]">{c.hard.title}</p>
+            <p class="relative mt-6 max-w-[46rem] text-[17px] leading-relaxed text-muted">{c.hard.body}</p>
+            {c.note && <p class="relative mt-8 inline-flex rounded-full border border-signal/40 bg-signal-dim px-4 py-1.5 font-mono text-[11.5px] uppercase tracking-[0.08em] text-signal">{c.note}</p>}
+          </div>
+        </section>
+
+        {
+          p.extra && (
+            <div data-reveal>
+              <Figure media={p.extra} n={`${p.index}.${figs.length + 2}`} />
+            </div>
+          )
+        }
+      </article>
+    </div>
+
+    <!-- Next -->
+    <a
+      href={`/work/${next.id}`}
+      data-curtain={next.title}
+      data-cursor="Next"
+      class="next-case group relative mt-40 block overflow-hidden border-y border-line py-16 sm:py-24"
+    >
+      <div class="container-x relative z-10 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p class="label">Next project · {next.index}</p>
-          <p class="mt-4 text-[clamp(2.2rem,6vw,4.5rem)] font-extrabold leading-[0.95] tracking-[-0.045em] text-strong">{next.title}</p>
-          <p class="mt-4 max-w-[34rem] text-[16px] leading-relaxed text-muted">{next.oneLiner}</p>
+          <p class="label transition-colors duration-500 group-hover:!text-[#1a0c03]">Next case study · {next.index}</p>
+          <p class="display mt-5 text-[clamp(4rem,13vw,11rem)] leading-[0.85] transition-colors duration-500 group-hover:!text-[#1a0c03]">{next.title}</p>
         </div>
-        <span class="grid h-14 w-14 shrink-0 place-items-center rounded-full border border-line-strong text-[20px] text-strong transition-[background-color,border-color,color,transform] duration-300 group-hover:translate-x-1 group-hover:border-signal group-hover:bg-signal group-hover:text-[#04110f]" aria-hidden="true">→</span>
-      </a>
-    </article>
+        <p class="max-w-[24rem] text-[15px] leading-relaxed text-muted transition-colors duration-500 group-hover:text-[#1a0c03]/80">{next.oneLiner}</p>
+      </div>
+      <span class="absolute inset-0 origin-bottom scale-y-0 bg-signal transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-y-100" aria-hidden="true"></span>
+    </a>
   </main>
-  <Contact index="" />
+  <Contact chapter="" />
 </Base>
+
+<style>
+  .clip-reveal {
+    clip-path: inset(18% 8% 18% 8% round 24px);
+    opacity: 0;
+    animation: clip-in 1500ms var(--ease-expo) 900ms forwards;
+  }
+  @keyframes clip-in {
+    to {
+      clip-path: inset(0% 0% 0% 0% round 14px);
+      opacity: 1;
+    }
+  }
+  :global(html.curtain-on) .clip-reveal {
+    animation-play-state: paused;
+  }
+  :global(html.motion) .steps-fill {
+    transform: scaleY(0);
+  }
+  .toc-link.is-active {
+    color: var(--color-strong);
+    border-color: var(--color-signal);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .clip-reveal {
+      animation: none;
+      clip-path: none;
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  import { gsap, onPage, reduced } from "../../lib/scroll";
+
+  onPage(() => {
+    const steps = document.getElementById("steps");
+    const fill = document.getElementById("steps-fill");
+    if (steps && fill && !reduced()) {
+      gsap.to(fill, { scaleY: 1, ease: "none", scrollTrigger: { trigger: steps, start: "top 70%", end: "bottom 60%", scrub: 0.6 } });
+    }
+
+    const links = [...document.querySelectorAll<HTMLAnchorElement>("[data-toc]")];
+    if (!links.length) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          links.forEach((l) => l.classList.toggle("is-active", l.dataset.toc === e.target.id));
+        });
+      },
+      { rootMargin: "-35% 0px -55% 0px" },
+    );
+    links.forEach((l) => {
+      const s = document.getElementById(l.dataset.toc!);
+      if (s) io.observe(s);
+    });
+    return () => io.disconnect();
+  });
+</script>

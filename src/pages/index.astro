@@ -2,13 +2,12 @@
 import Base from "../layouts/Base.astro";
 import Nav from "../components/Nav.astro";
 import Hero from "../components/Hero.astro";
-import Experience from "../components/Experience.astro";
-import Contact from "../components/Contact.astro";
-import AlsoBuilt from "../components/AlsoBuilt.astro";
-import SectionHeading from "../components/SectionHeading.astro";
+import Dolly from "../components/Dolly.astro";
 import About from "../components/About.astro";
-import ProjectCard from "../components/ProjectCard.astro";
-import { projects } from "../content/projects";
+import WorkTrack from "../components/WorkTrack.astro";
+import Experience from "../components/Experience.astro";
+import AlsoBuilt from "../components/AlsoBuilt.astro";
+import Contact from "../components/Contact.astro";
 ---
 
 <Base
@@ -18,22 +17,9 @@ import { projects } from "../content/projects";
   <Nav />
   <main id="main">
     <Hero />
+    <Dolly />
     <About />
-
-    <section id="work" class="container-x scroll-mt-24 pt-28 sm:pt-36" aria-labelledby="work-title">
-      <SectionHeading
-        id="work-title"
-        index="02"
-        eyebrow="Selected work"
-        title="Four systems,"
-        accent="built from zero."
-        aside="Each one has its numbers on the card and its own page behind it: problem, approach, evidence, and what was hard."
-      />
-      <div class="mt-14 flex flex-col gap-5 sm:gap-8">
-        {projects.map((p, i) => <ProjectCard p={p} flip={i % 2 === 1} />)}
-      </div>
-    </section>
-
+    <WorkTrack />
     <Experience />
     <AlsoBuilt />
   </main>

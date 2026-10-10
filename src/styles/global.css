@@ -1,25 +1,27 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #0a0b0d;
-  --color-raised: #111317;
-  --color-raised-2: #16191e;
-  --color-sunk: #07080a;
-  --color-line: rgb(255 255 255 / 0.07);
-  --color-line-strong: rgb(255 255 255 / 0.14);
-  --color-text: #e8eaed;
-  --color-strong: #ffffff;
-  --color-muted: #9ba1a9;
-  --color-faint: #7c838d;
-  --color-signal: #2dd4bf;
-  --color-signal-deep: #14b8a6;
-  --color-signal-dim: rgb(45 212 191 / 0.12);
+  --color-bg: #0c0a09;
+  --color-raised: #161210;
+  --color-raised-2: #1d1814;
+  --color-sunk: #080706;
+  --color-line: rgb(255 240 225 / 0.07);
+  --color-line-strong: rgb(255 240 225 / 0.15);
+  --color-text: #efe8e0;
+  --color-strong: #fffaf4;
+  --color-muted: #a59c92;
+  --color-faint: #80776d;
+  --color-signal: #ff8a3d;
+  --color-signal-light: #ffb27a;
+  --color-signal-deep: #e2621a;
+  --color-signal-dim: rgb(255 138 61 / 0.12);
 
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono Variable", ui-monospace, "SFMono-Regular", monospace;
   --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
 
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @layer base {
@@ -31,12 +33,14 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    scroll-behavior: smooth;
     scroll-padding-top: 6rem;
+    overflow-x: clip;
   }
-
+  html:not(.lenis) {
+    scroll-behavior: smooth;
+  }
   @media (prefers-reduced-motion: reduce) {
-    html {
+    html:not(.lenis) {
       scroll-behavior: auto;
     }
   }
@@ -49,7 +53,7 @@
 
   ::selection {
     background: var(--color-signal);
-    color: #04110f;
+    color: #170b03;
   }
 
   :focus-visible {
@@ -59,43 +63,85 @@
   }
 }
 
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* Film grain + warm vignette over everything, never interactive. */
+.grain {
+  position: fixed;
+  inset: -50%;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  animation: grain 1.2s steps(6) infinite;
+}
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-3%, 2%); }
+  40% { transform: translate(2%, -3%); }
+  60% { transform: translate(-2%, -1%); }
+  80% { transform: translate(3%, 3%); }
+  100% { transform: translate(0, 0); }
+}
+
 @layer components {
   .container-x {
     width: 100%;
-    max-width: 76rem;
+    max-width: 80rem;
     margin-inline: auto;
-    padding-inline: 1rem;
+    padding-inline: 1.25rem;
   }
   @media (min-width: 640px) {
     .container-x {
-      padding-inline: 2rem;
+      padding-inline: 2.5rem;
     }
   }
 
   .label {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.08em;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--color-faint);
   }
 
-  /* Editorial accent: one or two words per heading, never a whole line of body. */
+  /* Display serif: names, section titles, project titles. */
+  .display {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    letter-spacing: -0.025em;
+    line-height: 0.92;
+    color: var(--color-strong);
+  }
   .serif {
     font-family: var(--font-serif);
     font-style: italic;
     font-weight: 400;
     letter-spacing: -0.01em;
   }
+  .accent {
+    font-family: var(--font-serif);
+    font-style: italic;
+    color: var(--color-signal);
+  }
 
-  /* The signal trace, reused as the hover underline on links and titles. */
   .trace-link {
     background-image: linear-gradient(var(--color-signal), var(--color-signal));
     background-size: 0% 1px;
     background-position: 0 100%;
     background-repeat: no-repeat;
     transition:
-      background-size 220ms var(--ease-out-soft),
+      background-size 300ms var(--ease-out-soft),
       color 200ms var(--ease-out-soft);
   }
   .trace-link:hover,
@@ -104,17 +150,16 @@
     color: var(--color-strong);
   }
 
-  /* Surfaces */
   .card {
     position: relative;
-    border-radius: 1.5rem;
+    border-radius: 1.25rem;
     border: 1px solid var(--color-line);
     background:
-      linear-gradient(180deg, rgb(255 255 255 / 0.035), rgb(255 255 255 / 0.01) 40%),
+      linear-gradient(180deg, rgb(255 240 225 / 0.035), rgb(255 240 225 / 0.008) 45%),
       var(--color-raised);
     box-shadow:
-      inset 0 1px 0 rgb(255 255 255 / 0.04),
-      0 30px 60px -30px rgb(0 0 0 / 0.6);
+      inset 0 1px 0 rgb(255 240 225 / 0.04),
+      0 40px 80px -40px rgb(0 0 0 / 0.8);
   }
 
   .plate {
@@ -123,13 +168,7 @@
     border-radius: 14px;
     border: 1px solid var(--color-line-strong);
     background: var(--color-sunk);
-    box-shadow: 0 24px 48px -24px rgb(0 0 0 / 0.7);
-    transition:
-      border-color 250ms var(--ease-out-soft),
-      transform 400ms var(--ease-out-soft);
-  }
-  .plate:hover {
-    border-color: rgb(255 255 255 / 0.22);
+    box-shadow: 0 30px 60px -30px rgb(0 0 0 / 0.85);
   }
 
   .chrome {
@@ -149,7 +188,7 @@
     width: 9px;
     height: 9px;
     border-radius: 999px;
-    background: rgb(255 255 255 / 0.12);
+    background: rgb(255 240 225 / 0.12);
   }
 
   .chip {
@@ -158,154 +197,178 @@
     gap: 0.4rem;
     border-radius: 999px;
     border: 1px solid var(--color-line-strong);
-    background: rgb(255 255 255 / 0.02);
-    padding: 0.3rem 0.7rem;
+    background: rgb(255 240 225 / 0.02);
+    padding: 0.35rem 0.8rem;
     font-family: var(--font-mono);
     font-size: 11.5px;
     line-height: 1.2;
     color: var(--color-muted);
+    white-space: nowrap;
   }
 
   .btn {
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
-    height: 2.75rem;
-    padding-inline: 1rem;
+    gap: 0.55rem;
+    height: 3rem;
+    padding-inline: 1.15rem;
     border-radius: 999px;
-    font-size: 14.5px;
-    font-weight: 600;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     white-space: nowrap;
+    overflow: hidden;
+    isolation: isolate;
     transition:
-      background-color 200ms var(--ease-out-soft),
-      border-color 200ms var(--ease-out-soft),
-      color 200ms var(--ease-out-soft),
-      transform 200ms var(--ease-out-soft);
+      color 300ms var(--ease-out-soft),
+      border-color 300ms var(--ease-out-soft),
+      background-color 300ms var(--ease-out-soft);
   }
   @media (min-width: 640px) {
     .btn {
-      padding-inline: 1.25rem;
+      padding-inline: 1.5rem;
     }
   }
-  .btn:active {
-    transform: translateY(1px);
+  /* Fill that wipes up from the bottom on hover. */
+  .btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    transform: translateY(101%);
+    transition: transform 450ms var(--ease-expo);
+  }
+  .btn:hover::before {
+    transform: translateY(0);
   }
   .btn-primary {
     background: var(--color-signal);
-    color: #04110f;
-    box-shadow: 0 8px 30px -8px rgb(45 212 191 / 0.55);
+    color: #1a0c03;
+    box-shadow: 0 10px 40px -10px rgb(255 138 61 / 0.6);
   }
-  .btn-primary:hover {
-    background: #5eead4;
+  .btn-primary::before {
+    background: var(--color-strong);
   }
   .btn-ghost {
     border: 1px solid var(--color-line-strong);
     color: var(--color-strong);
-    background: rgb(255 255 255 / 0.02);
+  }
+  .btn-ghost::before {
+    background: var(--color-signal);
   }
   .btn-ghost:hover {
+    color: #1a0c03;
     border-color: var(--color-signal);
-    background: var(--color-signal-dim);
   }
 
   .icon-btn {
     display: inline-grid;
     place-items: center;
-    width: 2.75rem;
-    height: 2.75rem;
+    width: 3rem;
+    height: 3rem;
     border-radius: 999px;
     border: 1px solid var(--color-line-strong);
     color: var(--color-muted);
     transition:
-      color 200ms,
-      border-color 200ms,
-      background-color 200ms;
+      color 250ms,
+      border-color 250ms,
+      background-color 250ms;
   }
   .icon-btn:hover {
-    color: var(--color-strong);
+    color: #1a0c03;
     border-color: var(--color-signal);
-    background: var(--color-signal-dim);
+    background: var(--color-signal);
   }
 
-  /* Engineering-paper grid that fades out toward the edges. */
-  .grid-paper {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background-image:
-      linear-gradient(rgb(255 255 255 / 0.045) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(255 255 255 / 0.045) 1px, transparent 1px);
-    background-size: 56px 56px;
-    background-position: center top;
-    mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 20%, transparent 75%);
-  }
   .glow {
     position: absolute;
     pointer-events: none;
     border-radius: 999px;
-    filter: blur(80px);
-    background: radial-gradient(circle, rgb(45 212 191 / 0.22), transparent 65%);
+    filter: blur(90px);
+    background: radial-gradient(circle, rgb(255 138 61 / 0.25), transparent 65%);
   }
 
   .tabular {
     font-variant-numeric: tabular-nums;
   }
+
+  /* Hover spotlight + tilt (set by scroll.ts). */
+  [data-spotlight] {
+    --mx: 50%;
+    --my: 50%;
+  }
+  [data-spotlight]::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 400ms;
+    background: radial-gradient(420px circle at var(--mx) var(--my), rgb(255 138 61 / 0.13), transparent 60%);
+  }
+  [data-spotlight]:hover::after {
+    opacity: 1;
+  }
 }
 
-/* Scroll reveal. Content is visible by default; it is only hidden once JS has
-   confirmed it can reveal it again, so nothing goes blank on a slow device. */
+/* ------------------------------------------------------------------ */
+/* Reveal: visible by default; hidden only once JS can reveal it.      */
 .js [data-reveal] {
   transition:
-    opacity 700ms var(--ease-out-soft),
-    transform 700ms var(--ease-out-soft);
+    opacity 1000ms var(--ease-expo),
+    transform 1000ms var(--ease-expo),
+    filter 1000ms var(--ease-expo);
   transition-delay: var(--d, 0ms);
 }
 .js [data-reveal]:not([data-shown]) {
   opacity: 0;
-  transform: translateY(16px);
-}
-@media (prefers-reduced-motion: reduce) {
-  .js [data-reveal],
-  .js [data-reveal]:not([data-shown]) {
-    transform: none;
-    transition: opacity 200ms linear;
-  }
+  transform: translateY(40px);
+  filter: blur(6px);
 }
 
-/* Hero trace: draws once, then rests. */
-.hero-trace path.signal {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: trace-draw 1600ms var(--ease-out-soft) 400ms forwards;
+/* Split text: each word rises out of its own mask. */
+.split-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
 }
-.hero-trace .area {
-  opacity: 0;
-  animation: fade-in 900ms ease-out 1200ms forwards;
+.split-word > span {
+  display: inline-block;
+  transition: transform 1100ms var(--ease-expo);
+  transition-delay: calc(var(--i, 0) * 45ms + var(--d, 0ms));
 }
-.hero-trace .target,
-.hero-trace .note {
-  opacity: 0;
-  animation: fade-in 600ms ease-out 1300ms forwards;
+.js [data-split]:not([data-shown]) .split-word > span {
+  transform: translateY(110%) rotate(4deg);
 }
-.hero-trace .tip {
+
+/* Hero name: letters fall into place on load (CSS so it runs without JS). */
+.hero-letter {
+  display: inline-block;
   opacity: 0;
-  animation: fade-in 300ms ease-out 1900ms forwards;
+  transform: translateY(0.5em) rotate(6deg);
+  filter: blur(10px);
+  animation: letter-in 1300ms var(--ease-expo) forwards;
+  animation-delay: calc(var(--i) * 45ms + 250ms);
+}
+@keyframes letter-in {
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
 }
 .hero-enter {
   opacity: 0;
-  transform: translateY(14px);
-  animation: enter 800ms var(--ease-out-soft) forwards;
-}
-@keyframes trace-draw {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-@keyframes fade-in {
-  to {
-    opacity: 1;
-  }
+  transform: translateY(18px);
+  animation: enter 1200ms var(--ease-expo) forwards;
 }
 @keyframes enter {
   to {
@@ -313,93 +376,83 @@
     transform: none;
   }
 }
+
+/* Scroll cue */
+.scroll-cue::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--color-signal);
+  transform-origin: top;
+  animation: cue 2.2s var(--ease-expo) infinite;
+}
+@keyframes cue {
+  0% { transform: scaleY(0); transform-origin: top; }
+  45% { transform: scaleY(1); transform-origin: top; }
+  55% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+/* Marquee */
+.marquee {
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  gap: 0.6rem;
+  animation: marquee var(--dur, 40s) linear infinite;
+}
+.marquee-track[data-reverse] {
+  animation-direction: reverse;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Page transition: the default cross-fade is replaced by the curtain. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Custom cursor (desktop, fine pointers only). */
+@media (pointer: fine) {
+  html.has-cursor,
+  html.has-cursor a,
+  html.has-cursor button {
+    cursor: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .hero-trace path.signal,
-  .hero-trace .area,
-  .hero-trace .target,
-  .hero-trace .note,
-  .hero-trace .tip,
+  .grain,
+  .marquee-track,
+  .scroll-cue::after {
+    animation: none;
+  }
+  .hero-letter,
   .hero-enter {
     animation: none;
     opacity: 1;
     transform: none;
-    stroke-dashoffset: 0;
+    filter: none;
   }
-}
-
-/* Section titles rise out of a mask as their heading reveals. */
-.mask-reveal {
-  overflow: hidden;
-  padding-bottom: 0.1em;
-  margin-bottom: -0.1em;
-}
-.mask-line {
-  display: inline-block;
-  transition: transform 900ms var(--ease-out-soft) 80ms;
-}
-.js [data-reveal]:not([data-shown]) .mask-line {
-  transform: translateY(105%);
-}
-
-/* Project cards: the whole card is the link; media eases in on hover. */
-.project-card {
-  transition: border-color 300ms var(--ease-out-soft);
-}
-.project-card:hover {
-  border-color: rgb(45 212 191 / 0.35);
-}
-.project-card .plate :is(img, video) {
-  transition: transform 700ms var(--ease-out-soft);
-}
-.project-card:hover .plate :is(img, video) {
-  transform: scale(1.025);
-}
-
-/* Experience rail (mobile): fills with signal as each stage scrolls through. */
-@supports (animation-timeline: view()) {
-  .exp-link {
-    background:
-      linear-gradient(var(--color-signal), var(--color-signal)) top / 100% 0% no-repeat,
-      var(--color-line-strong);
-    animation: rail-fill linear both;
-    animation-timeline: view();
-    animation-range: entry 60% cover 55%;
+  .js [data-reveal],
+  .js [data-reveal]:not([data-shown]) {
+    transform: none;
+    filter: none;
+    transition: opacity 250ms linear;
   }
-  @keyframes rail-fill {
-    to {
-      background-size:
-        100% 100%,
-        auto;
-    }
-  }
-}
-
-/* Page transitions: a short cross-fade; titles and media morph between pages. */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation-duration: 320ms;
-  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-}
-::view-transition-group(*) {
-  animation-duration: 520ms;
-  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .mask-line,
-  .js [data-reveal]:not([data-shown]) .mask-line {
+  .js [data-split]:not([data-shown]) .split-word > span,
+  .split-word > span {
     transform: none;
     transition: none;
-  }
-  .project-card:hover .plate :is(img, video) {
-    transform: none;
-  }
-  .exp-link {
-    animation: none;
-  }
-  ::view-transition-group(*),
-  ::view-transition-old(*),
-  ::view-transition-new(*) {
-    animation: none !important;
   }
 }

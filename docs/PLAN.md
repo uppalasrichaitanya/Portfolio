@@ -280,3 +280,30 @@ The first build was correct but read as a plain document: one flat grey, no surf
 - **Motion:** a nav scroll-progress line, masked heading reveals, a hover zoom on card media, page cross-fades. All of it is off under reduced motion.
 - **Résumé** served at `/resume.pdf` from the nav, the hero and Contact. The role is updated to "AI Research Intern". Design-Taste is marked "on npm".
 - **References reviewed:** neokit.app (project pages, big serif index numbers, progress bar) and aelradi.engineer (facts strip). pavanteja-me.vercel.app is a Teleparadigm colleague, so its devices (HUD labels, coordinates) were deliberately not borrowed.
+
+---
+
+## 13. v4: cinematic redesign (supersedes §6, §7, §11, §12 visuals)
+
+- **Palette:** ink `#0c0a09` with an amber signal `#ff8a3d` (the token is still `signal`), film grain, and a warm vignette. **Type:** Instrument Serif display, Inter body, JetBrains Mono labels.
+- **Runtime:** Lenis inertial scroll on GSAP's ticker, plus ScrollTrigger (`src/lib/scroll.ts`).
+  - Components register `onPage()` setups, which re-run on every Astro page load and are reverted before each swap.
+  - Built-ins: split-word reveals, count-ups, magnetic buttons, tilt/spotlight, parallax, the scroll progress line.
+- **Hero:** a Three.js vector-space galaxy (`src/lib/galaxy.ts`) of ~6,500 shader points in embedding clusters.
+  - The cursor tilts it and lights up nearby points.
+  - The name sits in huge serif, with letters falling in.
+- **Dolly** (`Dolly.astro`, choreographed in `src/lib/home.ts`): a sticky 340vh stage.
+  - The camera flies into the cloud while "Systems / *robotics* / from scratch" rush past.
+  - The points then morph into a layered HNSW graph with edges, and a greedy search path draws itself.
+  - After that the galaxy stays as a dim backdrop, and brightens again for Contact.
+- **Work:** a pinned horizontal track on desktop (`WorkTrack.astro`). Frames slide sideways, media swings in from 3D depth, and there's a 01/04 HUD. It stacks on mobile.
+- **Experience:** an alternating timeline whose amber rail draws with scroll, with nodes that light up.
+- **Also built:** tilt + spotlight cards. **Contact:** a serif sign-off with magnetic buttons.
+- **Transitions:** an amber curtain (`Curtain.astro`) rises with the destination's name and lifts away. Entrances are held until it lifts. Back/forward restores the scroll position.
+- **Project pages:** an ordered editorial case study.
+  - A cover with letter-in title, proof bar and a clip-revealed hero media.
+  - A sticky TOC, then Problem (pull quote) → Approach (self-drawing step rail) → Evidence → What was hard.
+  - A "Next case study" banner with an amber wipe.
+- **Custom cursor** (dot + ring, labelled "View" over media), desktop only.
+- **Fixes:** "Resume" (not "Résumé"), KMCE.
+- Everything degrades: without JS or with reduced motion, there's no Lenis, no pinning, a static galaxy, and fully readable content.

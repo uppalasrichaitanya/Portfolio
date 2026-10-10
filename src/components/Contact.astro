@@ -2,51 +2,44 @@
 import CopyEmail from "./CopyEmail";
 import Icon from "./Icon.astro";
 import { contact } from "../content/projects";
-const { index = "05" } = Astro.props as { index?: string };
+const { chapter = "V" } = Astro.props as { chapter?: string };
 const year = new Date().getFullYear();
 ---
 
-<footer id="contact" class="container-x scroll-mt-24 pb-10 pt-24 sm:pt-32" aria-labelledby="contact-title">
-  <div data-reveal class="card relative overflow-hidden !rounded-[2rem] px-5 py-14 sm:px-12 sm:py-20">
-    <div class="grid-paper" aria-hidden="true"></div>
-    <div class="glow -right-24 -top-24 h-80 w-80" aria-hidden="true"></div>
-    <div class="glow -bottom-40 -left-24 h-80 w-80 opacity-60" aria-hidden="true"></div>
+<footer id="contact" class="relative z-10 scroll-mt-24 overflow-hidden pt-32 sm:pt-44" aria-labelledby="contact-title">
+  <div class="glow left-1/2 top-40 h-[30rem] w-[50rem] -translate-x-1/2 opacity-70" aria-hidden="true"></div>
+  <div class="container-x relative">
+    <p class="label flex items-center justify-center gap-3" data-reveal>
+      {chapter && <span class="text-signal">Chapter {chapter}</span>}
+      {chapter && <span class="h-px w-10 bg-signal/50" aria-hidden="true" />}
+      Contact
+    </p>
+    <h2 id="contact-title" class="display mx-auto mt-8 max-w-[14ch] text-center text-[clamp(3.4rem,10vw,9rem)]" data-split>
+      Let's build something <em class="accent">hard.</em>
+    </h2>
+    <p class="mx-auto mt-8 max-w-[34rem] text-center text-[17px] leading-relaxed text-muted" data-reveal style="--d:250ms">
+      Robotics, systems, research tooling, or a problem nobody has built the tool for yet. Email is the fastest way to
+      reach me.
+    </p>
 
-    <div class="relative">
-      <p class="label flex items-center gap-3">
-        {
-          index && (
-            <>
-              <span class="text-signal">{index}</span>
-              <span class="h-px w-8 bg-line-strong" aria-hidden="true" />
-            </>
-          )
-        }
-        Contact
-      </p>
-      <h2 id="contact-title" class="mt-5 max-w-[46rem] text-[clamp(2.2rem,5.5vw,4.2rem)] font-extrabold leading-[1] tracking-[-0.045em] text-strong">
-        Working on something hard? <span class="serif font-normal text-signal">I'd like to hear about it.</span>
-      </h2>
-      <p class="mt-6 max-w-[34rem] text-[17px] leading-relaxed text-muted">
-        Robotics, systems, research tooling, or a problem nobody has built the tool for yet. Email is the fastest way to
-        reach me.
-      </p>
-
-      <div class="mt-10">
-        <CopyEmail client:idle email={contact.email} />
-      </div>
-
-      <div class="mt-6 flex flex-wrap gap-3">
-        <a href={`mailto:${contact.email}`} class="btn btn-primary"><Icon name="mail" size={16} /> Email me</a>
-        <a href={contact.github} target="_blank" rel="noreferrer" class="btn btn-ghost"><Icon name="github" size={16} /> GitHub</a>
-        <a href={contact.linkedin} target="_blank" rel="noreferrer" class="btn btn-ghost"><Icon name="linkedin" size={16} /> LinkedIn</a>
-        <a href={contact.resume} target="_blank" rel="noreferrer" class="btn btn-ghost">Résumé <Icon name="arrow-up-right" size={14} /></a>
-      </div>
+    <div class="mx-auto mt-12 flex max-w-[40rem] justify-center" data-reveal style="--d:350ms">
+      <CopyEmail client:idle email={contact.email} />
     </div>
-  </div>
 
-  <div class="mt-10 flex flex-col-reverse gap-4 px-1 text-[13.5px] sm:flex-row sm:items-center sm:justify-between">
-    <p class="text-faint">© {year} Uppala Sri Chaitanya · Built from scratch with Astro.</p>
-    <a href="#main" class="trace-link w-fit text-muted">Back to top ↑</a>
+    <div class="mt-6 flex flex-wrap justify-center gap-3" data-reveal style="--d:450ms">
+      <a href={`mailto:${contact.email}`} class="btn btn-primary" data-magnetic="0.3"><Icon name="mail" size={15} /> Email me</a>
+      <a href={contact.github} target="_blank" rel="noreferrer" class="btn btn-ghost" data-magnetic="0.3"><Icon name="github" size={15} /> GitHub</a>
+      <a href={contact.linkedin} target="_blank" rel="noreferrer" class="btn btn-ghost" data-magnetic="0.3"><Icon name="linkedin" size={15} /> LinkedIn</a>
+      <a href={contact.resume} target="_blank" rel="noreferrer" class="btn btn-ghost" data-magnetic="0.3">Resume <Icon name="arrow-up-right" size={13} /></a>
+    </div>
+
+    <p class="display pointer-events-none mt-28 select-none whitespace-nowrap text-center text-[clamp(4rem,17vw,16rem)] italic leading-[0.8] text-transparent [-webkit-text-stroke:1px_rgb(255_138_61/0.28)]" aria-hidden="true" data-reveal>
+      Chaitanya
+    </p>
+
+    <div class="mt-8 flex flex-col-reverse gap-4 border-t border-line py-8 font-mono text-[11px] uppercase tracking-[0.12em] text-faint sm:flex-row sm:items-center sm:justify-between">
+      <p>© {year} Uppala Sri Chaitanya · Built from scratch</p>
+      <a href="#main" class="trace-link w-fit text-muted">Back to top ↑</a>
+    </div>
   </div>
 </footer>
