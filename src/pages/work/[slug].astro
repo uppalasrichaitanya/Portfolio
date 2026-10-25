@@ -25,7 +25,7 @@ const toc = [
 ];
 ---
 
-<Base title={`${p.title}: case study · Uppala Sri Chaitanya`} description={p.oneLiner}>
+<Base title={`${p.title}: case study · Uppala Sri Chaitanya`} description={p.oneLiner} image={`/og/${p.id}.jpg`} type="article">
   <Nav />
   <main id="main" class="relative">
     <div class="glow -left-40 -top-40 h-[40rem] w-[60rem] opacity-50" aria-hidden="true"></div>
@@ -109,12 +109,12 @@ const toc = [
 
       <article class="min-w-0 space-y-32 lg:col-span-9" aria-label={`${p.title} case study`}>
         <section id="problem" class="scroll-mt-28">
-          <p class="label" data-reveal><span class="text-signal">01</span> — The problem</p>
+          <h2 class="label" data-reveal><span class="text-signal">01</span> — The problem</h2>
           <p class="display mt-6 text-[clamp(2rem,3.8vw,3.3rem)] leading-[1.08]" data-split>{c.problem}</p>
         </section>
 
         <section id="approach" class="scroll-mt-28">
-          <p class="label" data-reveal><span class="text-signal">02</span> — The approach</p>
+          <h2 class="label" data-reveal><span class="text-signal">02</span> — The approach</h2>
           <ol id="steps" class="relative mt-10 space-y-10">
             <span class="absolute bottom-3 left-[1.15rem] top-3 w-px bg-line-strong" aria-hidden="true">
               <span id="steps-fill" class="steps-fill absolute inset-0 origin-top bg-signal shadow-[0_0_14px_rgba(255,138,61,0.6)]"></span>
@@ -133,7 +133,7 @@ const toc = [
         </section>
 
         <section id="evidence" class="scroll-mt-28">
-          <p class="label" data-reveal><span class="text-signal">03</span> — The evidence</p>
+          <h2 class="label" data-reveal><span class="text-signal">03</span> — The evidence</h2>
           <div class="mt-10 space-y-14">
             {
               c.evidence.metrics && (
@@ -168,7 +168,7 @@ const toc = [
         </section>
 
         <section id="hard" class="scroll-mt-28">
-          <p class="label" data-reveal><span class="text-signal">04</span> — What was hard</p>
+          <h2 class="label" data-reveal><span class="text-signal">04</span> — What was hard</h2>
           <div class="card mt-8 overflow-hidden p-7 sm:p-12" data-reveal data-spotlight>
             <div class="glow -right-24 -top-24 h-72 w-72 opacity-70" aria-hidden="true"></div>
             <p class="display relative text-[clamp(2.2rem,4vw,3.6rem)]">{c.hard.title}</p>

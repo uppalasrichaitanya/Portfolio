@@ -31,13 +31,15 @@ const line2 = letters("Chaitanya");
     </div>
 
     <div class="mt-auto">
-      <h1 class="display text-[clamp(4.2rem,14.5vw,13.5rem)] leading-[0.82]" aria-label="Uppala Sri Chaitanya">
+      <h1 class="display text-[clamp(4.2rem,21vw,6rem)] sm:text-[clamp(4.2rem,14.5vw,13.5rem)] leading-[0.82]" aria-label="Uppala Sri Chaitanya">
         <span class="block whitespace-nowrap" aria-hidden="true">
           {line1.map((l) => (l.ch === " " ? <span class="inline-block w-[0.22em]" /> : <span class="hero-letter" style={`--i:${l.i}`}>{l.ch}</span>))}
         </span>
         <span class="block whitespace-nowrap pl-[0.06em] italic text-signal" aria-hidden="true">
-          {line2.map((l) => <span class="hero-letter" style={`--i:${l.i}`}>{l.ch}</span>)}
-          <span class="hero-letter text-strong not-italic" style={`--i:${n}`}>.</span>
+          {line2.map((l) => <span class="hero-letter" style={`--i:${l.i}`}>{l.ch}</span>)}<span
+            class="hero-letter text-strong not-italic"
+            style={`--i:${n}`}>.</span
+          >
         </span>
       </h1>
 
