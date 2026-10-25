@@ -40,7 +40,7 @@ import { projects } from "../content/projects";
                   <dl class="mt-8 grid max-w-[34rem] grid-cols-3 gap-5 border-t border-line pt-6">
                     {p.proof.map((pr) => (
                       <div class="flex min-w-0 flex-col-reverse justify-end">
-                        <dt class="mt-2 text-[12px] leading-snug text-faint">{pr.label}</dt>
+                        <dt class="mt-2 text-[13px] leading-snug text-muted">{pr.label}</dt>
                         <dd class="display tabular text-[clamp(1.6rem,2.6vw,2.4rem)] leading-none !text-signal">{pr.value}</dd>
                       </div>
                     ))}
@@ -124,12 +124,12 @@ import { projects } from "../content/projects";
     .slide-media {
       order: 0;
     }
+    /* Behind the media, peeking out below its corner, so it never sits under the stats. */
     .slide-index {
       top: auto;
-      bottom: -2rem;
-      left: -1rem;
-      right: auto;
-      font-size: clamp(14rem, 24vw, 26rem);
+      bottom: -5.5rem;
+      right: -2.5rem;
+      font-size: clamp(14rem, 22vw, 24rem);
     }
 
     /* Horizontal mode (desktop + motion): sticky stage, JS moves the track. */
