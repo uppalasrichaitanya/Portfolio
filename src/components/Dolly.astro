@@ -1,11 +1,11 @@
 ---
 // The bridge from hero to content: a sticky stage the camera flies through.
-// Read as one line, they narrate the galaxy: scattered points (noise) re-form
-// into a graph (structure) and one search path lights up (signal).
+// Each word names what the galaxy is doing as it passes: the points are
+// scattered, re-form into a graph that gets searched, and one path is found.
 const words = [
-  { text: "From noise", cls: "" },
-  { text: "to structure", cls: "italic text-signal" },
-  { text: "to signal.", cls: "" },
+  { text: "Scattered.", cls: "" },
+  { text: "Searched.", cls: "italic text-signal" },
+  { text: "Found.", cls: "" },
 ];
 ---
 
@@ -36,7 +36,7 @@ const words = [
     align-items: center;
     gap: 0.25em;
     padding: 6rem 1.25rem;
-    font-size: clamp(3.5rem, 12vw, 10rem);
+    font-size: clamp(3.5rem, 18vw, 10rem);
     text-align: center;
   }
   .dolly-word {
