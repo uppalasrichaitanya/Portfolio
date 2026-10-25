@@ -15,7 +15,7 @@ const line2 = letters("Chaitanya");
   <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_45%,transparent_0%,rgba(12,10,9,0.35)_55%,rgba(12,10,9,0.92)_100%)]"></div>
 </div>
 
-<section id="top" class="relative z-10 h-[100svh] min-h-[620px]">
+<section id="top" class="relative z-10 h-[100svh] min-h-[680px]">
   <div id="hero-content" class="container-x relative flex h-full flex-col pb-10 pt-28 sm:pb-12 sm:pt-32">
     <div class="hero-enter flex items-start justify-between gap-6" style="animation-delay:150ms">
       <p class="label flex flex-wrap items-center gap-x-3 gap-y-1">
@@ -31,7 +31,7 @@ const line2 = letters("Chaitanya");
     </div>
 
     <div class="mt-auto">
-      <h1 class="display text-[clamp(4.2rem,21vw,6rem)] sm:text-[clamp(4.2rem,14.5vw,13.5rem)] leading-[0.82]" aria-label="Uppala Sri Chaitanya">
+      <h1 class="display text-[clamp(4.2rem,21vw,6rem)] sm:text-[clamp(4.2rem,14.5vw,13.5rem)] leading-[0.98]" aria-label="Uppala Sri Chaitanya">
         <span class="block whitespace-nowrap" aria-hidden="true">
           {line1.map((l) => (l.ch === " " ? <span class="inline-block w-[0.22em]" /> : <span class="hero-letter" style={`--i:${l.i}`}>{l.ch}</span>))}
         </span>
@@ -63,7 +63,7 @@ const line2 = letters("Chaitanya");
     </div>
   </div>
 
-  <div class="hero-enter pointer-events-none absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-3 lg:flex" style="animation-delay:1700ms" aria-hidden="true">
+  <div class="hero-enter pointer-events-none absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-3 xl:flex" style="animation-delay:1700ms" aria-hidden="true">
     <span class="label text-[10px]">Scroll</span>
     <span class="scroll-cue relative h-12 w-px overflow-hidden bg-line-strong"></span>
   </div>
