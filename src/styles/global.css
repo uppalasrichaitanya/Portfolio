@@ -456,3 +456,20 @@ html.lenis body {
     transition: none;
   }
 }
+
+/* CopyEmail: the label swaps in from below. */
+.copy-label {
+  display: inline-block;
+  animation: copy-in 200ms var(--ease-expo) both;
+}
+@keyframes copy-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .copy-label {
+    animation: none;
+  }
+}

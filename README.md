@@ -7,6 +7,7 @@ npm install
 npm run dev       # http://localhost:4321
 npm run build     # type-check + static build to dist/
 npm run media     # rebuild public/media from assets/ (needs ffmpeg)
+npm run og        # rebuild per-project share cards in public/og/ (needs Playwright + Chromium)
 ```
 
 - Copy and data: `src/content/projects.ts`

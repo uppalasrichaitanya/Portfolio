@@ -1,0 +1,36 @@
+---
+import Base from "../layouts/Base.astro";
+import Nav from "../components/Nav.astro";
+import Contact from "../components/Contact.astro";
+import { projects } from "../content/projects";
+---
+
+<Base title="Not found · Uppala Sri Chaitanya" description="This page doesn't exist." noindex>
+  <Nav />
+  <main id="main" class="relative">
+    <div class="glow -left-40 -top-40 h-[40rem] w-[60rem] opacity-50" aria-hidden="true"></div>
+    <section class="container-x relative flex min-h-[100svh] flex-col justify-center py-32">
+      <p class="hero-enter label" style="animation-delay:100ms"><span class="text-signal">Error 404</span> — no edge leads here</p>
+      <h1 class="display mt-6 text-[clamp(4.5rem,15vw,13rem)] leading-[0.82]">
+        {[..."Not found"].map((ch, i) => (ch === " " ? <span class="inline-block w-[0.22em]" /> : <span class="hero-letter" style={`--i:${i}`}>{ch}</span>))}<span
+          class="hero-letter text-signal"
+          style="--i:9">.</span
+        >
+      </h1>
+      <p class="hero-enter mt-8 max-w-[34rem] text-[17px] leading-relaxed text-muted" style="animation-delay:700ms">
+        The page you followed doesn't exist, or it moved. The work is all still here.
+      </p>
+      <div class="hero-enter mt-10 flex flex-wrap items-center gap-3" style="animation-delay:820ms">
+        <a href="/" data-curtain="Index" data-curtain-kicker="Back to" class="btn btn-primary" data-magnetic="0.3">Back home</a>
+        {
+          projects.map((p) => (
+            <a href={`/work/${p.id}`} data-curtain={p.title} class="btn btn-ghost" data-magnetic="0.3">
+              {p.title}
+            </a>
+          ))
+        }
+      </div>
+    </section>
+  </main>
+  <Contact chapter="" />
+</Base>

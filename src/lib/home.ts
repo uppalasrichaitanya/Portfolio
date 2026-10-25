@@ -1,4 +1,4 @@
-import { createGalaxy } from "./galaxy";
+import type { createGalaxy, GalaxyState } from "./galaxy";
 import { gsap, onPage, reduced } from "./scroll";
 
 /*
@@ -8,35 +8,61 @@ import { gsap, onPage, reduced } from "./scroll";
  *            the cloud as three words rush past, then the points re-form
  *            into a layered HNSW graph and one search path lights up
  *   after  → the galaxy dims to a backdrop for the rest of the page
+ *
+ * three.js is most of the page's script weight, so the galaxy loads once the
+ * name has painted and the main thread is idle. The scroll timeline drives a
+ * plain state object from the start, so the words and hero still play if the
+ * galaxy is late, skipped (Save-Data) or unsupported (no WebGL).
  */
 
-onPage(() => {
+const whenIdle = (fn: () => void) => ("requestIdleCallback" in window ? window.requestIdleCallback(fn, { timeout: 1200 }) : setTimeout(fn, 300));
+
+onPage((ctx) => {
   const canvas = document.getElementById("galaxy") as HTMLCanvasElement | null;
   if (!canvas) return;
 
-  let galaxy: ReturnType<typeof createGalaxy>;
-  try {
-    galaxy = createGalaxy(canvas, { count: window.innerWidth < 768 ? 2800 : 6500, still: reduced() });
-  } catch {
-    // No WebGL: the vignette and type carry the hero on their own.
-    canvas.remove();
-    return;
-  }
-  const s = galaxy.state;
-
+  const wide = window.innerWidth >= 1024;
+  const s: GalaxyState = { intro: 0, camZ: 13, camY: 0.6, lookY: 0, tiltX: 0.18, spin: 0, morph: 0, path: 0, dim: 1, offsetX: 0 };
   if (reduced()) {
     s.intro = 1;
     s.dim = 0.8;
-    galaxy.render();
-    return () => galaxy.dispose();
+  } else {
+    // Desktop hero: the cloud sits to the right of the name, then centres as the camera flies in.
+    s.offsetX = wide ? 4.2 : 0;
+    if (!wide) s.camZ = 9.5;
+    choreograph(s);
   }
 
-  // Desktop hero: the cloud sits to the right of the name, then centres as the camera flies in.
-  const wide = window.innerWidth >= 1024;
-  s.offsetX = wide ? 4.2 : 0;
-  if (!wide) s.camZ = 9.5;
-  gsap.to(s, { intro: 1, duration: 2.8, ease: "expo.out", delay: 0.1 });
+  const conn = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+  if (conn?.saveData) {
+    canvas.remove();
+    return;
+  }
 
+  let galaxy: ReturnType<typeof createGalaxy> | null = null;
+  let gone = false;
+  whenIdle(async () => {
+    try {
+      const { createGalaxy } = await import("./galaxy");
+      if (gone) return;
+      galaxy = createGalaxy(canvas, { count: window.innerWidth < 768 ? 2800 : 6500, still: reduced(), state: s });
+    } catch {
+      // No WebGL (or the chunk failed): the vignette and type carry the hero on their own.
+      canvas.remove();
+      return;
+    }
+    if (reduced()) galaxy.render();
+    // Inside the page context, so it is reverted on navigation.
+    else ctx.add(() => gsap.to(s, { intro: 1, duration: 2.8, ease: "expo.out", delay: 0.1 }));
+  });
+
+  return () => {
+    gone = true;
+    galaxy?.dispose();
+  };
+});
+
+function choreograph(s: GalaxyState) {
   const dolly = document.getElementById("dolly");
   const hero = document.getElementById("hero-content");
   const words = gsap.utils.toArray<HTMLElement>("[data-dolly-word]");
@@ -68,15 +94,21 @@ onPage(() => {
     tl.to({}, { duration: 0.04 }, 0.98);
   }
 
-  // Afterwards the galaxy is a dim backdrop, brightening again for contact.
+  // Afterwards the galaxy is a dim backdrop, brightening a little for contact (not so much that the copy loses contrast).
   const about = document.getElementById("about");
   if (about) {
-    gsap.fromTo(s, { dim: 1 }, { dim: 0.28, ease: "none", immediateRender: false, scrollTrigger: { trigger: about, start: "top bottom", end: "top 30%", scrub: true } });
+    gsap.fromTo(
+      s,
+      { dim: 1 },
+      { dim: 0.28, ease: "none", immediateRender: false, scrollTrigger: { trigger: about, start: "top bottom", end: "top 30%", scrub: true } },
+    );
   }
   const contact = document.getElementById("contact");
   if (contact) {
-    gsap.fromTo(s, { dim: 0.28 }, { dim: 0.7, ease: "none", immediateRender: false, scrollTrigger: { trigger: contact, start: "top bottom", end: "top 20%", scrub: true } });
+    gsap.fromTo(
+      s,
+      { dim: 0.28 },
+      { dim: 0.45, ease: "none", immediateRender: false, scrollTrigger: { trigger: contact, start: "top bottom", end: "top 20%", scrub: true } },
+    );
   }
-
-  return () => galaxy.dispose();
-});
+}

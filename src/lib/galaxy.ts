@@ -1,4 +1,21 @@
-import * as THREE from "three";
+import {
+  AdditiveBlending,
+  BufferAttribute,
+  BufferGeometry,
+  EdgesGeometry,
+  Group,
+  Line,
+  LineBasicMaterial,
+  LineSegments,
+  PerspectiveCamera,
+  PlaneGeometry,
+  Points,
+  Scene,
+  ShaderMaterial,
+  Vector2,
+  Vector3,
+  WebGLRenderer,
+} from "three";
 
 /*
  * A vector-space "galaxy": points clustered like embeddings. Scroll can morph
@@ -108,7 +125,7 @@ function build(count: number) {
     const ph = Math.acos(2 * rand() - 1);
     const r = 2 + rand() * 4.5;
     return {
-      c: new THREE.Vector3(r * Math.sin(ph) * Math.cos(th), r * Math.cos(ph) * 0.55, r * Math.sin(ph) * Math.sin(th)),
+      c: new Vector3(r * Math.sin(ph) * Math.cos(th), r * Math.cos(ph) * 0.55, r * Math.sin(ph) * Math.sin(th)),
       s: 0.45 + rand() * 0.75,
     };
   });
@@ -197,23 +214,23 @@ function build(count: number) {
   return { A, B, seed, scale, edges: new Float32Array(edges), path: new Float32Array(pathPts), pathCount: path.length };
 }
 
-export function createGalaxy(canvas: HTMLCanvasElement, opts: { count: number; still?: boolean }) {
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: "high-performance" });
+export function createGalaxy(canvas: HTMLCanvasElement, opts: { count: number; still?: boolean; state?: GalaxyState }) {
+  const renderer = new WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: "high-performance" });
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
   renderer.setPixelRatio(dpr);
   renderer.setClearColor(0x000000, 0);
 
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(55, 1, 0.05, 120);
-  const group = new THREE.Group();
+  const scene = new Scene();
+  const camera = new PerspectiveCamera(55, 1, 0.05, 120);
+  const group = new Group();
   scene.add(group);
 
   const data = build(opts.count);
-  const geo = new THREE.BufferGeometry();
-  geo.setAttribute("position", new THREE.BufferAttribute(data.A, 3));
-  geo.setAttribute("aB", new THREE.BufferAttribute(data.B, 3));
-  geo.setAttribute("aSeed", new THREE.BufferAttribute(data.seed, 1));
-  geo.setAttribute("aScale", new THREE.BufferAttribute(data.scale, 1));
+  const geo = new BufferGeometry();
+  geo.setAttribute("position", new BufferAttribute(data.A, 3));
+  geo.setAttribute("aB", new BufferAttribute(data.B, 3));
+  geo.setAttribute("aSeed", new BufferAttribute(data.seed, 1));
+  geo.setAttribute("aScale", new BufferAttribute(data.scale, 1));
 
   const uniforms = {
     uTime: { value: 0 },
@@ -222,46 +239,47 @@ export function createGalaxy(canvas: HTMLCanvasElement, opts: { count: number; s
     uSize: { value: 52 },
     uPixel: { value: dpr },
     uAspect: { value: 1 },
-    uMouse: { value: new THREE.Vector2(10, 10) },
+    uMouse: { value: new Vector2(10, 10) },
     uDim: { value: 1 },
   };
-  const mat = new THREE.ShaderMaterial({
+  const mat = new ShaderMaterial({
     uniforms,
     vertexShader: vert,
     fragmentShader: frag,
     transparent: true,
     depthWrite: false,
-    blending: THREE.AdditiveBlending,
+    blending: AdditiveBlending,
   });
-  const points = new THREE.Points(geo, mat);
+  const points = new Points(geo, mat);
   points.frustumCulled = false;
   group.add(points);
 
-  const edgeGeo = new THREE.BufferGeometry();
-  edgeGeo.setAttribute("position", new THREE.BufferAttribute(data.edges, 3));
-  const edgeMat = new THREE.LineBasicMaterial({ color: 0xff8a3d, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending });
-  const edgeLines = new THREE.LineSegments(edgeGeo, edgeMat);
+  const edgeGeo = new BufferGeometry();
+  edgeGeo.setAttribute("position", new BufferAttribute(data.edges, 3));
+  const edgeMat = new LineBasicMaterial({ color: 0xff8a3d, transparent: true, opacity: 0, depthWrite: false, blending: AdditiveBlending });
+  const edgeLines = new LineSegments(edgeGeo, edgeMat);
   group.add(edgeLines);
 
-  const pathGeo = new THREE.BufferGeometry();
-  pathGeo.setAttribute("position", new THREE.BufferAttribute(data.path, 3));
-  const pathMat = new THREE.LineBasicMaterial({ color: 0xffe2c4, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending });
-  const pathLine = new THREE.Line(pathGeo, pathMat);
+  const pathGeo = new BufferGeometry();
+  pathGeo.setAttribute("position", new BufferAttribute(data.path, 3));
+  const pathMat = new LineBasicMaterial({ color: 0xffe2c4, transparent: true, opacity: 0, depthWrite: false, blending: AdditiveBlending });
+  const pathLine = new Line(pathGeo, pathMat);
   pathGeo.setDrawRange(0, 0);
   group.add(pathLine);
 
   // Layer planes for the graph view (faint frames).
   const planes = LAYERS.map((y) => {
-    const g = new THREE.EdgesGeometry(new THREE.PlaneGeometry(15, 9.4));
-    const m = new THREE.LineBasicMaterial({ color: 0xff8a3d, transparent: true, opacity: 0, depthWrite: false });
-    const l = new THREE.LineSegments(g, m);
+    const g = new EdgesGeometry(new PlaneGeometry(15, 9.4));
+    const m = new LineBasicMaterial({ color: 0xff8a3d, transparent: true, opacity: 0, depthWrite: false });
+    const l = new LineSegments(g, m);
     l.rotation.x = -Math.PI / 2;
     l.position.y = y;
     group.add(l);
     return m;
   });
 
-  const state: GalaxyState = { intro: 0, camZ: 13, camY: 0.6, lookY: 0, tiltX: 0.18, spin: 0, morph: 0, path: 0, dim: 1, offsetX: 0 };
+  // The page can own the state, so scroll tweens can run before the galaxy loads.
+  const state = opts.state ?? { intro: 0, camZ: 13, camY: 0.6, lookY: 0, tiltX: 0.18, spin: 0, morph: 0, path: 0, dim: 1, offsetX: 0 };
 
   // Pointer: eased tilt + "query" highlight.
   const mouse = { x: 0, y: 0, tx: 0, ty: 0, active: false };

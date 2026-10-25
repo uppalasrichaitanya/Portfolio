@@ -7,14 +7,30 @@ import { ClientRouter } from "astro:transitions";
 import Cursor from "../components/Cursor.astro";
 import Curtain from "../components/Curtain.astro";
 import "../styles/global.css";
+import { contact, experience } from "../content/projects";
 
 interface Props {
   title: string;
   description: string;
+  /** Share card, relative to the site root. Project cards come from `npm run og`. */
+  image?: string;
+  type?: "website" | "article";
+  noindex?: boolean;
 }
-const { title, description } = Astro.props;
-const ogImage = new URL("/og.png", Astro.site);
+const { title, description, image = "/og.jpg", type = "website", noindex = false } = Astro.props;
+const ogImage = new URL(image, Astro.site);
 const canonical = new URL(Astro.url.pathname, Astro.site);
+
+// Tells search engines who the site is about, so the name links to the profiles.
+const person = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Uppala Sri Chaitanya",
+  url: Astro.site?.href,
+  jobTitle: experience.role,
+  worksFor: { "@type": "Organization", name: experience.org },
+  sameAs: [contact.github, contact.linkedin],
+};
 ---
 
 <!doctype html>
@@ -28,12 +44,17 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <meta property="og:type" content="website" />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta property="og:type" content={type} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
+    {Astro.url.pathname === "/" && <script type="application/ld+json" set:html={JSON.stringify(person)} />}
     <ClientRouter fallback="swap" />
     <script is:inline data-astro-rerun>
       (function () {
